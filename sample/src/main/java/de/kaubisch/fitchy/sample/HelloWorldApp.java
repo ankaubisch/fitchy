@@ -34,7 +34,7 @@ public class HelloWorldApp
 	
 	
 	public HelloWorldApp() {
-		FeatureStore store = Fitchy.loadStoreFromResource("/helloworld_feature.properties");
+		FeatureStore store = Fitchy.loadStoreFromResource("/sample_features.properties");
 //		LoaderOption option = loader.getOption();
 //		option.enabled = "an";
 //		option.disabled = "aus";

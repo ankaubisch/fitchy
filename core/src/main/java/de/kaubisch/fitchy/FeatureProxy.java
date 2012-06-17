@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.example.HelloWorld;
 import de.kaubisch.fitchy.store.FeatureStore;
 
 public class FeatureProxy implements InvocationHandler {
@@ -22,6 +21,7 @@ public class FeatureProxy implements InvocationHandler {
 		this.originClass = origin.getClass();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(FeatureStore store, Object obj) {
 		T proxyInstance = (T)Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new FeatureProxy(store, obj));
 		
@@ -43,6 +43,7 @@ public class FeatureProxy implements InvocationHandler {
 		return returnValue;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private <T extends Annotation> T retrieveAnnotation(Class<? extends Annotation> annotationClass, Method method) {
 		T annotation = (T) method.getAnnotation(annotationClass);
 		if(annotation == null && !method.getDeclaringClass().equals(originClass)) {

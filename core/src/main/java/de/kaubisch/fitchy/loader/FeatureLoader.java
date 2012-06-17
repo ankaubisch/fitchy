@@ -3,24 +3,20 @@ package de.kaubisch.fitchy.loader;
 import java.util.List;
 
 import de.kaubisch.fitchy.Feature;
+import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.store.FeatureStore;
 
 public abstract class FeatureLoader {
 	
-	protected final LoaderOption option;
+	protected final FitchyOptions option;
 	
 	public FeatureLoader() {
-		this.option = LoaderOption.newOption("on", "off");
+		this.option = Fitchy.getOptions();
 	}
 	
-	public FeatureLoader(LoaderOption option) {
-		this.option = option;
-	}
-	
-	public LoaderOption getOption() {
+	public FitchyOptions getOption() {
 		return option;
 	}
-	
 	
 	public void loadFeaturesIntoStore(FeatureStore store) {
 		store.clear();
