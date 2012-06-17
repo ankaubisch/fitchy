@@ -11,13 +11,13 @@ import de.kaubisch.fitchy.store.FeatureStore;
 
 public class FeatureProxy implements InvocationHandler {
 
-	private FeatureStore manager;
+	private FeatureStore store;
 	
 	private Object origin;
 	private Class<?> originClass;
 	
-	public FeatureProxy(FeatureStore manager, Object origin) {
-		this.manager = manager;
+	public FeatureProxy(FeatureStore store, Object origin) {
+		this.store = store;
 		this.origin = origin;
 		this.originClass = origin.getClass();
 	}
@@ -34,7 +34,7 @@ public class FeatureProxy implements InvocationHandler {
 		Object returnValue = null;
 		FeatureSwitch annotation = retrieveAnnotation(FeatureSwitch.class, method);
 		if(annotation != null) {
-			if(manager.hasFeature(annotation)) {
+			if(store.hasFeature(annotation.value())) {
 				returnValue = method.invoke(origin, arguments);
 			}
 		} else {

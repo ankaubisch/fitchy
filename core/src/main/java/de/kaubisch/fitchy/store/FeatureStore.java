@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 public class FeatureStore {
 
@@ -18,12 +17,8 @@ public class FeatureStore {
 		featureMap.put(key, new Feature(key, true));
 	}
 	
-	public boolean isFeatureEnabled(String key) {
+	public boolean hasFeature(String key) {
 		return !"".equals(key) && featureMap.get(key) != null;
-	}
-	
-	public boolean hasFeature(FeatureSwitch annotation) {
-		return isFeatureEnabled(annotation.value());
 	}
 	
 	public void clear() {
