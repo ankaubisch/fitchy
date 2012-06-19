@@ -34,7 +34,7 @@ public class FeatureProxy implements InvocationHandler {
 		Object returnValue = null;
 		FeatureSwitch annotation = retrieveAnnotation(FeatureSwitch.class, method);
 		if(annotation != null) {
-			if(store.hasFeature(annotation.value())) {
+			if(store.featureHasStatus(annotation.value(), Fitchy.getOptions().enabled)) {
 				returnValue = method.invoke(origin, arguments);
 			}
 		} else {

@@ -21,9 +21,7 @@ public abstract class FeatureLoader {
 	public void loadFeaturesIntoStore(FeatureStore store) {
 		store.clear();
 		for(Feature feature : getFeatureList()) {
-			if(feature.enabled) {
-				store.addFeature(feature.name);
-			}
+			store.addFeature(feature);
 		}
 	}
 

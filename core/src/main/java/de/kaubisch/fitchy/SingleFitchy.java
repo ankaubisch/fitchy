@@ -17,7 +17,7 @@ public class SingleFitchy {
 	public static FeatureStore getSingletonFeatureStore() {
 		SingleFitchy fitchy = Singleton.INSTANCE;
 		if(fitchy.storage == null) {
-			fitchy.storage = new FeatureStore();
+			fitchy.storage = new FeatureStore(Fitchy.getOptions());
 		}
 		
 		return fitchy.storage;

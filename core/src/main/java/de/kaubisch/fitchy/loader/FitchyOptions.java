@@ -1,23 +1,36 @@
 package de.kaubisch.fitchy.loader;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.kaubisch.fitchy.DefaultFeatureStatus;
+import de.kaubisch.fitchy.FeatureStatus;
+
+
 public class FitchyOptions {
-	public static final String DEFAULT_ENABLED = "on";
-	public static final String DEFAULT_DISABLED = "off";
+	public List<FeatureStatus> statusList;
 	
-	public String enabled;
-	public String disabled;
+	public FeatureStatus enabled;
+	public FeatureStatus disabled;
 	
-	public static FitchyOptions newOption(String enabled, String disabled) {
+	private FitchyOptions() {
+		this.statusList = new ArrayList<FeatureStatus>();
+	}
+	
+	public static FitchyOptions newOption(FeatureStatus status) {
 		FitchyOptions option = new FitchyOptions();
-		option.enabled = enabled;
-		option.disabled = disabled;
+		for(FeatureStatus e : status.getClass().getEnumConstants()) {
+			option.statusList.add(e);
+			if(e.isEnabledStatus()) {
+				option.enabled = e;
+			} else if(e.isDisabledStatus()) {
+				option.disabled= e;
+			}
+		}
 		return option;
 	}
 
 	public static FitchyOptions getDefault() {
-		FitchyOptions options = new FitchyOptions();
-		options.enabled = DEFAULT_ENABLED;
-		options.disabled = DEFAULT_DISABLED;
-		return options;
+		return newOption(DefaultFeatureStatus.ON);
 	}
 }

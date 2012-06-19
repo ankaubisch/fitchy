@@ -26,8 +26,8 @@ public class CustomOptionsApp {
 	
 	public CustomOptionsApp() {
 		FitchyOptions options = Fitchy.getOptions();
-		options.enabled = "an";
-		options.disabled = "aus";
+//		options.enabled = "an";
+//		options.disabled = "aus";
 		FeatureStore store = Fitchy.loadStoreFromResource("/sample_features_de.properties");
 		
 		sample = FeatureProxy.newInstance(store, new DummyImplementation());

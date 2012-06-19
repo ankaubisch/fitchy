@@ -8,7 +8,7 @@ import java.net.URL;
 
 import de.kaubisch.fitchy.loader.FeatureLoader;
 import de.kaubisch.fitchy.loader.FitchyOptions;
-import de.kaubisch.fitchy.loader.ResourceFeatureLoader;
+import de.kaubisch.fitchy.loader.PropertyFeatureLoader;
 import de.kaubisch.fitchy.store.FeatureStore;
 
 public final class Fitchy {
@@ -29,7 +29,7 @@ public final class Fitchy {
 	}
 	
 	public static final FeatureStore loadStoreFromUrl(URL url) {
-		FeatureStore store = new FeatureStore();
+		FeatureStore store = new FeatureStore(Fitchy.getOptions());
 		addFeaturesFromUrl(url, store);
 		return store;
 	}
@@ -39,7 +39,7 @@ public final class Fitchy {
 			try {
 				File file = new File(url.toURI());
 				if(file.exists() && file.canRead()) {
-					FeatureLoader loader = new ResourceFeatureLoader(new FileInputStream(file));
+					FeatureLoader loader = new PropertyFeatureLoader(new FileInputStream(file));
 					loader.loadFeaturesIntoStore(store);
 				}
 			} catch (FileNotFoundException e) {
