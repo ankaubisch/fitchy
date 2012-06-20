@@ -5,7 +5,7 @@ import java.util.Map;
 
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureStatus;
-import de.kaubisch.fitchy.loader.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchyOptions;
 
 public class FeatureStore {
 

@@ -7,8 +7,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import de.kaubisch.fitchy.loader.FeatureLoader;
-import de.kaubisch.fitchy.loader.FitchyOptions;
 import de.kaubisch.fitchy.loader.PropertyFeatureLoader;
+import de.kaubisch.fitchy.options.FitchyOptions;
 import de.kaubisch.fitchy.store.FeatureStore;
 
 public final class Fitchy {
