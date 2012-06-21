@@ -16,36 +16,39 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.options;
+package de.kaubisch.fitchy.exception;
 
-import de.kaubisch.fitchy.FeatureStatus;
+import java.io.InputStream;
 
-public enum DefaultFeatureStatus implements FeatureStatus {
-	ON("on", true),
-	OFF("off", false);
+import de.kaubisch.fitchy.loader.FeatureLoader;
 
-	private boolean enabled, disabled;
-	private String systemName;
-	
-	private DefaultFeatureStatus(String systemName, Boolean status) {
-		this.systemName = systemName;
-		this.enabled = status != null && status;
-		this.disabled = status != null && !status;
-	}
-	
-	@Override
-	public String getSystemName() {
-		return systemName;
+/**
+ * Exception that is thrown if a {@link FeatureLoader} cannot read {@link InputStream}
+ * format.
+ * 
+ * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ */
+public class UnsupportedFormatException extends RuntimeException {
+
+	public UnsupportedFormatException() {
+		super();
 	}
 
-	@Override
-	public boolean isEnabledStatus() {
-		return enabled;
+	public UnsupportedFormatException(String message, Throwable cause,
+			boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	@Override
-	public boolean isDisabledStatus() {
-		return disabled;
+	public UnsupportedFormatException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public UnsupportedFormatException(String message) {
+		super(message);
+	}
+
+	public UnsupportedFormatException(Throwable cause) {
+		super(cause);
 	}
 
 }
