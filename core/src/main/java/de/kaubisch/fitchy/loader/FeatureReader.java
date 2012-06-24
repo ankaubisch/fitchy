@@ -18,12 +18,12 @@
  */
 package de.kaubisch.fitchy.loader;
 
+import de.kaubisch.fitchy.Feature;
+import de.kaubisch.fitchy.exception.UnsupportedFormatException;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-
-import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.exception.UnsupportedFormatException;
 
 /**
  * An abstract class thats provides functions to read

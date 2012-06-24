@@ -18,12 +18,12 @@
  */
 package de.kaubisch.fitchy.loader;
 
-import java.util.List;
-
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.options.FitchyOptions;
 import de.kaubisch.fitchy.store.FeatureStore;
+
+import java.util.List;
 
 public abstract class FeatureLoader {
 	

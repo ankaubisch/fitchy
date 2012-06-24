@@ -18,9 +18,9 @@
  */
 package de.kaubisch.fitchy.exception;
 
-import java.io.InputStream;
-
 import de.kaubisch.fitchy.loader.FeatureLoader;
+
+import java.io.InputStream;
 
 /**
  * Exception that is thrown if a {@link FeatureLoader} cannot read {@link InputStream}

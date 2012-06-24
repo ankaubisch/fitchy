@@ -16,25 +16,29 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy;
+package de.kaubisch.fitchy.resolver;
+
+import de.kaubisch.fitchy.annotation.FeatureSwitch;
+import de.kaubisch.fitchy.store.FeatureStore;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
-import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.store.FeatureStore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FeatureProxy implements InvocationHandler {
 
-	private FeatureStore store;
+    private final static Logger LOG = Logger.getLogger(FeatureProxy.class.getName());
+
+	private FeatureResolver resolver;
 	
 	private Object origin;
 	private Class<?> originClass;
 	
 	public FeatureProxy(FeatureStore store, Object origin) {
-		this.store = store;
+		this.resolver = new FeatureResolver(store);
 		this.origin = origin;
 		this.originClass = origin.getClass();
 	}
@@ -45,16 +49,15 @@ public class FeatureProxy implements InvocationHandler {
 		
 		return proxyInstance;
 	}
-	
-	@Override
+
 	public Object invoke(Object instance, Method method, Object[] arguments)
 			throws Throwable {
 		Object returnValue = null;
 		FeatureSwitch annotation = retrieveAnnotation(FeatureSwitch.class, method);
-		if(annotation != null) {
-			if(store.featureHasStatus(annotation.value(), Fitchy.getOptions().enabled)) {
-				returnValue = method.invoke(origin, arguments);
-			}
+        if(annotation != null) {
+            if(resolver.isFeatureAvailable(annotation)) {
+                returnValue = method.invoke(origin, arguments);
+            }
 		} else {
 			returnValue = method.invoke(origin, arguments);			
 		}
@@ -70,11 +73,13 @@ public class FeatureProxy implements InvocationHandler {
 				annotation = (T) implementedMethod.getAnnotation(annotationClass);
 	
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+                if(LOG.isLoggable(Level.FINE)) {
+                    LOG.fine("method in implementing class not found. " + e.getMessage());
+                }
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+                if(LOG.isLoggable(Level.FINE)) {
+                    LOG. fine("cannot access method. " + e.getMessage());
+                }
 			}
 		}
 

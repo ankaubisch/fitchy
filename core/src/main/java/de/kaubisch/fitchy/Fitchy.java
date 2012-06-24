@@ -18,18 +18,16 @@
  */
 package de.kaubisch.fitchy;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import de.kaubisch.fitchy.loader.FeatureReader;
 import de.kaubisch.fitchy.options.FitchyOptions;
 import de.kaubisch.fitchy.store.FeatureStore;
+
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * Main class to enable project for fitchy and have functions to fill stores
  * and get fitchy options.
@@ -144,4 +142,17 @@ public final class Fitchy {
 	public static FitchyOptions getOptions() {
 		return Singleton.OPTIONS;
 	}
+
+    /**
+     * Sets all values of current {@link FitchyOptions} to new values from passed options.
+     *
+     * @param options {@link FitchyOptions} object with new values
+     */
+    public static synchronized void setOptions(FitchyOptions options) {
+        FitchyOptions oldOptions = Singleton.OPTIONS;
+        oldOptions.readerClass = options.readerClass;
+        oldOptions.enabled = options.enabled;
+        oldOptions.disabled = options.disabled;
+        oldOptions.statusList = new ArrayList<FeatureStatus>(options.statusList);
+    }
 }

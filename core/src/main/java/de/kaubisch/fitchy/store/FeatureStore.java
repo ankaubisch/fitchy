@@ -18,12 +18,12 @@
  */
 package de.kaubisch.fitchy.store;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.options.FitchyOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FeatureStore {
 

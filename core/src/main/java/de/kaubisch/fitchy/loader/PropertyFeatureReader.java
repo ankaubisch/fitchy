@@ -18,15 +18,15 @@
  */
 package de.kaubisch.fitchy.loader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.Properties;
-
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.exception.UnsupportedFormatException;
 import de.kaubisch.fitchy.options.FitchyOptions;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * Implementation of {@link FeatureReader} that can read streams from 

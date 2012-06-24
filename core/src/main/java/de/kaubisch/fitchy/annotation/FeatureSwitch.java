@@ -26,5 +26,20 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value=ElementType.METHOD)
 public @interface FeatureSwitch {
-	String value();
+
+    /**
+     * Represents the name of the feature. This value is required when using this annotation.
+     *
+     * @return the name pf the feature
+     */
+    String value();
+
+    /**
+     * Represents the system name of a feature status. Default value is an empty String
+     * so the system knows to look that the status of the feature return true when calling
+     * {@link de.kaubisch.fitchy.FeatureStatus#isEnabledStatus()}
+     *
+     * @return the {@link de.kaubisch.fitchy.FeatureStatus#getSystemName()} value or an empty String by default
+     */
+    String status() default "";
 }

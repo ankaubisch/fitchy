@@ -1,6 +1,6 @@
 package de.kaubisch.fitchy.sample;
 
-import de.kaubisch.fitchy.FeatureProxy;
+import de.kaubisch.fitchy.resolver.FeatureProxy;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.store.FeatureStore;

@@ -18,12 +18,13 @@
  */
 package de.kaubisch.fitchy.options;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.kaubisch.fitchy.FeatureStatus;
+import de.kaubisch.fitchy.exception.StatusNotFoundException;
 import de.kaubisch.fitchy.loader.FeatureReader;
 import de.kaubisch.fitchy.loader.PropertyFeatureReader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FitchyOptions {
@@ -59,14 +60,18 @@ public class FitchyOptions {
 		return options;
 	}
 	
-	public FeatureStatus statusOf(String value) {
-		FeatureStatus statusOfValue = disabled;
+	public FeatureStatus statusOf(String value) throws StatusNotFoundException {
+		FeatureStatus statusOfValue = null;
 		for(FeatureStatus status : statusList) {
 			if(status.getSystemName().equals(value)) {
 				statusOfValue = status;
 			}
 		}
-		
+
+        if(statusOfValue == null) {
+            throw new StatusNotFoundException("status with name '" + value + "' not found.");
+        }
+
 		return statusOfValue;
 	}
 }

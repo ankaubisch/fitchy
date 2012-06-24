@@ -16,33 +16,30 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.options;
+package de.kaubisch.fitchy.exception;
 
-import de.kaubisch.fitchy.FeatureStatus;
+/**
+ * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * Date: 6/22/12
+ * Time: 12:31 PM
+ */
+public class StatusNotFoundException extends RuntimeException {
+    public StatusNotFoundException() {
+    }
 
-public enum DefaultFeatureStatus implements FeatureStatus {
-	ON("on", true),
-	OFF("off", false);
+    public StatusNotFoundException(String message) {
+        super(message);
+    }
 
-	private boolean enabled, disabled;
-	private String systemName;
-	
-	private DefaultFeatureStatus(String systemName, Boolean status) {
-		this.systemName = systemName;
-		this.enabled = status != null && status;
-		this.disabled = status != null && !status;
-	}
-	
-	public String getSystemName() {
-		return systemName;
-	}
+    public StatusNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public boolean isEnabledStatus() {
-		return enabled;
-	}
+    public StatusNotFoundException(Throwable cause) {
+        super(cause);
+    }
 
-	public boolean isDisabledStatus() {
-		return disabled;
-	}
-
+    public StatusNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }
