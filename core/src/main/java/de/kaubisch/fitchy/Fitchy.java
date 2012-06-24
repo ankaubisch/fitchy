@@ -18,6 +18,8 @@
  */
 package de.kaubisch.fitchy;
 
+import de.kaubisch.fitchy.internal.CglibObserver;
+import de.kaubisch.fitchy.internal.JavaProxyObserver;
 import de.kaubisch.fitchy.loader.FeatureReader;
 import de.kaubisch.fitchy.options.FitchyOptions;
 import de.kaubisch.fitchy.store.FeatureStore;
@@ -150,9 +152,34 @@ public final class Fitchy {
      */
     public static synchronized void setOptions(FitchyOptions options) {
         FitchyOptions oldOptions = Singleton.OPTIONS;
-        oldOptions.readerClass = options.readerClass;
+        if(options.readerClass != null) {
+            oldOptions.readerClass = options.readerClass;
+        }
         oldOptions.enabled = options.enabled;
         oldOptions.disabled = options.disabled;
         oldOptions.statusList = new ArrayList<FeatureStatus>(options.statusList);
+    }
+
+    /**
+     * Create an {@link FeatureObserver} and start to observe the passed object for
+     * method calls with {@link de.kaubisch.fitchy.annotation.FeatureSwitch} annotated.
+     *
+     * @param toObserve object that needs to be observed
+     * @param store current {@link FeatureStore}
+     * @return returns observed object
+     */
+    public static <T> T observe(T toObserve, FeatureStore store) {
+        FeatureObserver observer = new JavaProxyObserver();
+        return observer.observe(toObserve, store);
+    }
+
+    public static <T> T observeWithObserver(T toObserve, FeatureStore store, Class<FeatureObserver> observerClass) {
+        try {
+            FeatureObserver observer = observerClass.newInstance();
+            return observer.observe(toObserve, store);
+        } catch (InstantiationException e) {
+        } catch (IllegalAccessException e) {
+        }
+        return toObserve;
     }
 }

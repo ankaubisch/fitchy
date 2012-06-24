@@ -1,6 +1,5 @@
 package de.kaubisch.fitchy.sample;
 
-import de.kaubisch.fitchy.resolver.FeatureProxy;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.store.FeatureStore;
@@ -35,10 +34,7 @@ public class HelloWorldApp
 	
 	public HelloWorldApp() {
 		FeatureStore store = Fitchy.loadStoreFromResource("/sample_features.properties");
-//		LoaderOption option = loader.getOption();
-//		option.enabled = "an";
-//		option.disabled = "aus";
-		sample = (HelloWorld) FeatureProxy.newInstance(store, new HelloWorldSample());
+		sample = Fitchy.observe(new HelloWorldSample(), store);
 	}
 	
 	public void testFeatures() {

@@ -1,7 +1,6 @@
 package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.FeatureStatus;
-import de.kaubisch.fitchy.resolver.FeatureProxy;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.options.FitchyOptions;
@@ -44,7 +43,7 @@ public class CustomOptionsApp {
 	public static interface DummyInterface {
 		void doMethod();
 	}
-	
+
 	private class DummyImplementation implements DummyInterface {
 
 		@FeatureSwitch(value="simple_feature_de", status = "hidden")
@@ -54,7 +53,7 @@ public class CustomOptionsApp {
 		
 	}
 	
-	private DummyInterface sample; 
+	private DummyInterface sample;
 	
 	public CustomOptionsApp() {
 		FitchyOptions options = FitchyOptions.newOption(CustomFeatureStatus.class);
@@ -62,7 +61,7 @@ public class CustomOptionsApp {
 
 		FeatureStore store = Fitchy.loadStoreFromResource("/sample_features_de.properties");
 		
-		sample = FeatureProxy.newInstance(store, new DummyImplementation());
+		sample = Fitchy.observe(new DummyImplementation(), store);
 	}
 	
 	public void callSample() {
