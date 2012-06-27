@@ -2,18 +2,18 @@ package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.FeatureChecker;
 import de.kaubisch.fitchy.Fitchy;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 public class FeatureCheckerApp {
 
-	private FeatureStore store;
+	private FeatureContext context;
 	
 	public FeatureCheckerApp() {
-		store = Fitchy.loadStoreFromResource("/sample_features.properties");
+		context = Fitchy.loadStoreFromResource("/sample_features.properties");
 	}
 	
 	public void execute() {
-		System.out.println(new FeatureChecker<String>(store, "simple_test") {
+		System.out.println(new FeatureChecker<String>(context, "simple_test") {
 
 			@Override
 			public String onFeatureEnabled() {

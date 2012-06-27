@@ -16,15 +16,33 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy;
-
-import de.kaubisch.fitchy.store.FeatureContext;
+package de.kaubisch.fitchy.exception;
 
 /**
+ * Exception that is thrown by the system if the passed object cannot be observed by
+ * a {@link de.kaubisch.fitchy.FeatureObserver}.
+ *
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 6/24/12
- * Time: 1:04 PM
+ * Time: 4:54 PM
  */
-public interface FeatureObserver {
-    <T> T observe(Object toObserve, FeatureContext context);
+public class UnableToObserveException extends RuntimeException {
+    public UnableToObserveException() {
+    }
+
+    public UnableToObserveException(String message) {
+        super(message);
+    }
+
+    public UnableToObserveException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public UnableToObserveException(Throwable cause) {
+        super(cause);
+    }
+
+    public UnableToObserveException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 }

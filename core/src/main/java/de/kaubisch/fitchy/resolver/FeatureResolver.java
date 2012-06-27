@@ -22,10 +22,10 @@ import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.options.FitchyOptions;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 /**
- * {@link FeatureResolver} needs a {@link de.kaubisch.fitchy.store.FeatureStore} and a
+ * {@link FeatureResolver} needs a {@link de.kaubisch.fitchy.store.FeatureContext} and a
  * {@link de.kaubisch.fitchy.annotation.FeatureSwitch} annotation to check if the given expression
  * of the annotation matches with the current feature.
  *
@@ -35,15 +35,15 @@ import de.kaubisch.fitchy.store.FeatureStore;
  */
 public class FeatureResolver {
 
-    private FeatureStore storage;
+    private FeatureContext storage;
 
-    public FeatureResolver(FeatureStore store) {
-        this.storage = store;
+    public FeatureResolver(FeatureContext context) {
+        this.storage = context;
     }
 
     /**
      * This functions decides whether a feature is available or not. It processes the {@link FeatureSwitch} annotation
-     * and lookup in {@link FeatureStore} member variable if feature exists. When the annotation doesn't have set the
+     * and lookup in {@link de.kaubisch.fitchy.store.FeatureContext} member variable if feature exists. When the annotation doesn't have set the
      * status value so it check if the feature has the status enabled taken from current {@link FitchyOptions} object.
      *
      * @param annotation given annotation that needs to be checked

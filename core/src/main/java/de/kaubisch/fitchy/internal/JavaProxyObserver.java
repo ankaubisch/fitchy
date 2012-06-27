@@ -23,7 +23,7 @@ import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
 import de.kaubisch.fitchy.resolver.AnnotationRetriever;
 import de.kaubisch.fitchy.resolver.FeatureResolver;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -38,11 +38,11 @@ public class JavaProxyObserver implements FeatureObserver {
 
     public static class ProxyInvocationHandler implements InvocationHandler {
         private Object origin;
-        private FeatureStore store;
+        private FeatureContext context;
 
-        public ProxyInvocationHandler(Object origin, FeatureStore store) {
+        public ProxyInvocationHandler(Object origin, FeatureContext context) {
             this.origin = origin;
-            this.store  = store;
+            this.context = context;
         }
 
         public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
@@ -50,7 +50,7 @@ public class JavaProxyObserver implements FeatureObserver {
             Object result = null;
             try {
                 FeatureSwitch featureSwitch = retriever.getAnnotation(method);
-                FeatureResolver resolver = new FeatureResolver(store);
+                FeatureResolver resolver = new FeatureResolver(context);
                 if(resolver.isFeatureAvailable(featureSwitch)) {
                     result = method.invoke(origin, objects);
                 }
@@ -61,8 +61,8 @@ public class JavaProxyObserver implements FeatureObserver {
         }
     }
 
-    public <T> T observe(Object obj, FeatureStore store) {
-        T proxyInstance = (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj, store));
+    public <T> T observe(Object obj, FeatureContext context) {
+        T proxyInstance = (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj, context));
         return proxyInstance;
     }
 }

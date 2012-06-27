@@ -2,7 +2,7 @@ package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 /**
  * Hello world!
@@ -33,8 +33,8 @@ public class HelloWorldApp
 	
 	
 	public HelloWorldApp() {
-		FeatureStore store = Fitchy.loadStoreFromResource("/sample_features.properties");
-		sample = Fitchy.observe(new HelloWorldSample(), store);
+		FeatureContext context = Fitchy.loadStoreFromResource("/sample_features.properties");
+		sample = Fitchy.observe(new HelloWorldSample(), context);
 	}
 	
 	public void testFeatures() {

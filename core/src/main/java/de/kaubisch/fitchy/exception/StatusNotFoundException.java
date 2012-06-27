@@ -19,6 +19,8 @@
 package de.kaubisch.fitchy.exception;
 
 /**
+ * Is thrown if a {@link de.kaubisch.fitchy.FeatureStatus} is not found by the system.
+ *
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 6/22/12
  * Time: 12:31 PM

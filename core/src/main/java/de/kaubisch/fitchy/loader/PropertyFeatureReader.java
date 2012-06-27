@@ -39,21 +39,26 @@ public class PropertyFeatureReader extends FeatureReader {
 	private Properties rawEntryData;
 	
 	private Enumeration<Object> keyEnum;
-	
+
 	/**
 	 * constructor of super class {@link FeatureReader}
 	 * 
 	 * @param is {@link InputStream} stream of a feature source
+     * @param options {@link FitchyOptions} current options that the reader can use to
+     *                                     determine which {@link de.kaubisch.fitchy.FeatureStatus}
+     *                                     a {@link Feature} has.
 	 */
-	public PropertyFeatureReader(InputStream is) {
-		super(is);
+	public PropertyFeatureReader(InputStream is, FitchyOptions options) {
+		super(is, options);
 		try {
 			rawEntryData = new Properties();
 			rawEntryData.load(is);
 			keyEnum = rawEntryData.keys();
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            //do nothing. exception will be thrown at function read()
+		} catch (NullPointerException e) {
+            //do nothing. exception will be thrown at function read()
+        }
 		
 	}
 
@@ -62,9 +67,12 @@ public class PropertyFeatureReader extends FeatureReader {
 	 */
 	@Override
 	public Feature read() throws UnsupportedFormatException {
+        if(keyEnum == null || rawEntryData == null) {
+            throw new UnsupportedFormatException("unable from InputStream");
+        }
+
 		Feature next = null;
 		if(keyEnum.hasMoreElements()) {
-			FitchyOptions options = Fitchy.getOptions();
 			Object key = keyEnum.nextElement();
 			if(key instanceof String) {
 				String value = rawEntryData.getProperty((String)key, options.disabled.getSystemName());

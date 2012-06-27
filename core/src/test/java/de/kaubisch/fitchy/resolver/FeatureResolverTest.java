@@ -20,7 +20,7 @@ package de.kaubisch.fitchy.resolver;
 
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.options.DefaultFeatureStatus;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 public class FeatureResolverTest {
 
     @Mock
-    FeatureStore store;
+    FeatureContext context;
 
     @Mock
     FeatureSwitch annotation;
@@ -48,12 +48,12 @@ public class FeatureResolverTest {
 
     @Before
     public void setUp() throws Exception {
-        resolver = new FeatureResolver(store);
+        resolver = new FeatureResolver(context);
     }
 
     @Test
-    public void testIsFeatureAvailableWithoutAnnotationStatusReturnsTrue() throws Exception {
-        when(store.featureHasStatus("test.feature", DefaultFeatureStatus.ON)).thenReturn(true);
+    public void IsFeatureAvailable_WithoutAnnotationStatus_ReturnsTrue() throws Exception {
+        when(context.featureHasStatus("test.feature", DefaultFeatureStatus.ON)).thenReturn(true);
         when(annotation.value()).thenReturn("test.feature");
         when(annotation.status()).thenReturn("");
         assertTrue(resolver.isFeatureAvailable(annotation));

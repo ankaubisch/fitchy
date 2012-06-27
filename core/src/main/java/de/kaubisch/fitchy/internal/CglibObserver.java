@@ -23,12 +23,11 @@ import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
 import de.kaubisch.fitchy.resolver.AnnotationRetriever;
 import de.kaubisch.fitchy.resolver.FeatureResolver;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
@@ -41,11 +40,11 @@ public class CglibObserver implements FeatureObserver {
     public static class CglibMethodInterceptor implements MethodInterceptor {
 
         private Object origin;
-        private FeatureStore store;
+        private FeatureContext context;
 
-        public CglibMethodInterceptor(Object origin, FeatureStore store) {
+        public CglibMethodInterceptor(Object origin, FeatureContext context) {
             this.origin = origin;
-            this.store  = store;
+            this.context = context;
         }
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
 
@@ -53,7 +52,7 @@ public class CglibObserver implements FeatureObserver {
             Object result = null;
             try {
                 FeatureSwitch featureSwitch = retriever.getAnnotation(method);
-                FeatureResolver resolver = new FeatureResolver(store);
+                FeatureResolver resolver = new FeatureResolver(context);
                 if(resolver.isFeatureAvailable(featureSwitch)) {
                     result = method.invoke(origin, objects);
                 }
@@ -66,10 +65,10 @@ public class CglibObserver implements FeatureObserver {
     }
 
 
-    public <T> T observe(Object toObserve, FeatureStore store) {
+    public <T> T observe(Object toObserve, FeatureContext context) {
         Enhancer e = new Enhancer();
         e.setSuperclass(toObserve.getClass());
-        e.setCallback(new CglibMethodInterceptor(toObserve, store));
+        e.setCallback(new CglibMethodInterceptor(toObserve, context));
         return (T)e.create();
     }
 }

@@ -28,26 +28,27 @@ import java.util.List;
 
 
 public class FitchyOptions {
-	public List<FeatureStatus> statusList;
+	public List<Enum<? extends FeatureStatus>> statusList;
 	
 	public FeatureStatus enabled;
 	public FeatureStatus disabled;
 	
 	public Class<? extends FeatureReader> readerClass;
 	
-	private FitchyOptions() {
-		this.statusList  = new ArrayList<FeatureStatus>();
+	public FitchyOptions() {
+		this.statusList  = new ArrayList<Enum<? extends FeatureStatus>>();
 	}
-	
-	public static FitchyOptions newOption(Class<? extends FeatureStatus> status) {
+
+	public static FitchyOptions newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
 		FitchyOptions option = new FitchyOptions();
 		if(Enum.class.isAssignableFrom(status)) {
-			for(FeatureStatus e : status.getEnumConstants()) {
+			for(Enum<? extends FeatureStatus> e : status.getEnumConstants()) {
 				option.statusList.add(e);
-				if(e.isEnabledStatus()) {
-					option.enabled = e;
-				} else if(e.isDisabledStatus()) {
-					option.disabled= e;
+                FeatureStatus featureStatus = (FeatureStatus) e;
+				if(featureStatus.isEnabledStatus()) {
+					option.enabled = featureStatus;
+				} else if(featureStatus.isDisabledStatus()) {
+					option.disabled= featureStatus;
 				}
 			}
 		}
@@ -62,9 +63,10 @@ public class FitchyOptions {
 	
 	public FeatureStatus statusOf(String value) throws StatusNotFoundException {
 		FeatureStatus statusOfValue = null;
-		for(FeatureStatus status : statusList) {
-			if(status.getSystemName().equals(value)) {
-				statusOfValue = status;
+		for(Enum< ? extends FeatureStatus> status : statusList) {
+            FeatureStatus featureStatus = (FeatureStatus)status;
+			if(featureStatus.getSystemName().equals(value)) {
+				statusOfValue = featureStatus;
 			}
 		}
 
@@ -74,4 +76,15 @@ public class FitchyOptions {
 
 		return statusOfValue;
 	}
+
+    public FeatureStatus statusOfName(String name) throws StatusNotFoundException {
+        FeatureStatus statusOfName = null;
+        for(Enum<? extends FeatureStatus> status : statusList) {
+            if(status.name().equals(name)) {
+                statusOfName = (FeatureStatus) status;
+            }
+        }
+
+        return statusOfName;
+    }
 }

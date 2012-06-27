@@ -18,11 +18,10 @@
  */
 package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.internal.CglibObserver;
 import de.kaubisch.fitchy.internal.JavaProxyObserver;
 import de.kaubisch.fitchy.loader.FeatureReader;
 import de.kaubisch.fitchy.options.FitchyOptions;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -56,43 +55,43 @@ public final class Fitchy {
 	
 	/**
 	 * Loads a resource from classpath with ClassLoader of this class.
-	 * Always returns an instance of {@link FeatureStore} wether it can read
+	 * Always returns an instance of {@link de.kaubisch.fitchy.store.FeatureContext} wether it can read
 	 * the resource or not.
 	 * 
 	 * @param resourceName name of the resource in classpath
-	 * @return an instance of {@link FeatureStore}
+	 * @return an instance of {@link de.kaubisch.fitchy.store.FeatureContext}
 	 */
-	public static final FeatureStore loadStoreFromResource(String resourceName) {
+	public static final FeatureContext loadStoreFromResource(String resourceName) {
 		return loadStoreFromUrl(Fitchy.class.getResource(resourceName));
 	}
 	
 	/**
 	 * Loads a resource with feature configuration from an {@link URL} and stores all
-	 * of this in a new {@link FeatureStore} and returns it.
+	 * of this in a new {@link de.kaubisch.fitchy.store.FeatureContext} and returns it.
 	 *  
 	 * @param url an {@link URL} to a resource with feature configuration
 	 * 
-	 * @return a new {@link FeatureStore} with loaded {@link Feature} items
+	 * @return a new {@link de.kaubisch.fitchy.store.FeatureContext} with loaded {@link Feature} items
 	 */
-	public static final FeatureStore loadStoreFromUrl(URL url) {
-		FeatureStore store = new FeatureStore(Fitchy.getOptions());
-		addFeaturesFromUrl(url, store);
-		return store;
+	public static final FeatureContext loadStoreFromUrl(URL url) {
+		FeatureContext context = new FeatureContext(Fitchy.getOptions());
+		addFeaturesFromUrl(url, context);
+		return context;
 	}
 	
 	/**
-	 * Add all features from url resource to existing {@link FeatureStore}.
+	 * Add all features from url resource to existing {@link de.kaubisch.fitchy.store.FeatureContext}.
 	 * This overrides existing {@link Feature} added to storage.
 	 * 
 	 * @param url an {@link URL} to a resource that contains features
-	 * @param store a {@link FeatureStore} that holds all features
+	 * @param context a {@link de.kaubisch.fitchy.store.FeatureContext} that holds all features
 	 */
-	public static void addFeaturesFromUrl(URL url, FeatureStore store) {
+	public static void addFeaturesFromUrl(URL url, FeatureContext context) {
 		if(url != null) {
 			try {
 				File file = new File(url.toURI());
 				if(file.exists() && file.canRead()) {
-					fillStoreWithFeatures(store, file);
+					fillStoreWithFeatures(context, file);
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -105,13 +104,13 @@ public final class Fitchy {
 	/**
 	 * Retrieves current options and the {@link FeatureReader} class that is set to this options.
 	 * Create an instance of this {@link FeatureReader} and loads all Features from File and put them
-	 * into {@link FeatureStore}.
+	 * into {@link de.kaubisch.fitchy.store.FeatureContext}.
 	 * 
-	 * @param store an instance of {@link FeatureStore}
+	 * @param context an instance of {@link de.kaubisch.fitchy.store.FeatureContext}
 	 * @param file {@link File} full of features
 	 * @throws FileNotFoundException is thrown if {@link File} is not found
 	 */
-	private static void fillStoreWithFeatures(FeatureStore store, File file)
+	private static void fillStoreWithFeatures(FeatureContext context, File file)
 			throws FileNotFoundException {
 		FitchyOptions option = Fitchy.getOptions();
 		FeatureReader reader = null;
@@ -121,7 +120,7 @@ public final class Fitchy {
 			
 			Feature feature = null;
 			while((feature = reader.read()) != null) {
-				store.addFeature(feature);
+				context.addFeature(feature);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,7 +156,7 @@ public final class Fitchy {
         }
         oldOptions.enabled = options.enabled;
         oldOptions.disabled = options.disabled;
-        oldOptions.statusList = new ArrayList<FeatureStatus>(options.statusList);
+        oldOptions.statusList = new ArrayList<Enum<? extends FeatureStatus>>(options.statusList);
     }
 
     /**
@@ -165,18 +164,18 @@ public final class Fitchy {
      * method calls with {@link de.kaubisch.fitchy.annotation.FeatureSwitch} annotated.
      *
      * @param toObserve object that needs to be observed
-     * @param store current {@link FeatureStore}
+     * @param context current {@link de.kaubisch.fitchy.store.FeatureContext}
      * @return returns observed object
      */
-    public static <T> T observe(T toObserve, FeatureStore store) {
+    public static <T> T observe(T toObserve, FeatureContext context) {
         FeatureObserver observer = new JavaProxyObserver();
-        return observer.observe(toObserve, store);
+        return observer.observe(toObserve, context);
     }
 
-    public static <T> T observeWithObserver(T toObserve, FeatureStore store, Class<FeatureObserver> observerClass) {
+    public static <T> T observeWithObserver(T toObserve, FeatureContext context, Class<FeatureObserver> observerClass) {
         try {
             FeatureObserver observer = observerClass.newInstance();
-            return observer.observe(toObserve, store);
+            return observer.observe(toObserve, context);
         } catch (InstantiationException e) {
         } catch (IllegalAccessException e) {
         }

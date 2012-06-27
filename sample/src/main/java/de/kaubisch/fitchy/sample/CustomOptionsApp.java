@@ -4,7 +4,7 @@ import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.options.FitchyOptions;
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 public class CustomOptionsApp {
 
@@ -59,9 +59,9 @@ public class CustomOptionsApp {
 		FitchyOptions options = FitchyOptions.newOption(CustomFeatureStatus.class);
         Fitchy.setOptions(options);
 
-		FeatureStore store = Fitchy.loadStoreFromResource("/sample_features_de.properties");
+		FeatureContext context = Fitchy.loadStoreFromResource("/sample_features_de.properties");
 		
-		sample = Fitchy.observe(new DummyImplementation(), store);
+		sample = Fitchy.observe(new DummyImplementation(), context);
 	}
 	
 	public void callSample() {

@@ -25,13 +25,13 @@ import de.kaubisch.fitchy.options.FitchyOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FeatureStore {
+public class FeatureContext {
 
 	private Map<String, Feature> featureMap;
 	private FitchyOptions options;
 	
 	
-	public FeatureStore(FitchyOptions options) {
+	public FeatureContext(FitchyOptions options) {
 		featureMap = new HashMap<String, Feature>();
 		this.options = options;
 	}

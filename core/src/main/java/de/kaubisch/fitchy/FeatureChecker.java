@@ -18,15 +18,15 @@
  */
 package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.store.FeatureStore;
+import de.kaubisch.fitchy.store.FeatureContext;
 
 public abstract class FeatureChecker<T> {
 
-	private FeatureStore store;
+	private FeatureContext context;
 	private String featureName;
 	
-	public FeatureChecker(FeatureStore storage, String featureName) {
-		this.store = storage;
+	public FeatureChecker(FeatureContext storage, String featureName) {
+		this.context = storage;
 		this.featureName = featureName;
 	}
 	
@@ -35,7 +35,7 @@ public abstract class FeatureChecker<T> {
 	
 	public T run() {
 		T result = null;
-		if(store.hasFeature(featureName)) {
+		if(context.hasFeature(featureName)) {
 			result = onFeatureEnabled();
 		} else {
 			result = onFeatureDisabled();
