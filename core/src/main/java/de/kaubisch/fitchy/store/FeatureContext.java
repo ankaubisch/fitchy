@@ -20,11 +20,18 @@ package de.kaubisch.fitchy.store;
 
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureStatus;
+import de.kaubisch.fitchy.exception.FeatureAlreadyExistsException;
 import de.kaubisch.fitchy.options.FitchyOptions;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@link FeatureContext} contains all loaded {@link Feature} items of
+ * Fitchy and provide methods to query these items.
+ *
+ * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ */
 public class FeatureContext {
 
 	private Map<String, Feature> featureMap;
@@ -36,12 +43,30 @@ public class FeatureContext {
 		this.options = options;
 	}
 	
-	public void addFeature(String key) {
-		featureMap.put(key, new Feature(key, options.enabled));
+	public Feature addFeature(String key) throws FeatureAlreadyExistsException {
+        if(key == null || "".equals(key.trim())) {
+            throw new IllegalArgumentException("key argument must be a value");
+        }
+        if(hasFeature(key)) {
+            throw new FeatureAlreadyExistsException("feature with name " + key +" already exists.");
+        }
+
+		Feature feature = new Feature(key, options.enabled);
+        featureMap.put(key, feature);
+        return feature;
 	}
 	
-	public void addFeature(Feature feature) {
+	public Feature addFeature(Feature feature) throws FeatureAlreadyExistsException {
+        if(feature == null) {
+            throw new IllegalArgumentException("feature argument must be an instance");
+        }
+        if(hasFeature(feature.name)) {
+            throw new FeatureAlreadyExistsException("feature with name " + feature.name + " already exists.");
+        }
+
 		featureMap.put(feature.name, feature);
+
+        return feature;
 	}
 	
 	public boolean hasFeature(String key) {
@@ -49,7 +74,11 @@ public class FeatureContext {
 	}
 	
 	public boolean featureHasStatus(String key, FeatureStatus status) {
-		if(hasFeature(key)) {
+		if(key == null) {
+            throw new IllegalArgumentException("key argument is required");
+        }
+
+        if(hasFeature(key)) {
 			return featureMap.get(key).status == status;
 		}
 		
@@ -59,4 +88,8 @@ public class FeatureContext {
 	public void clear() {
 		featureMap.clear();
 	}
+
+    public int size() {
+        return featureMap.size();
+    }
 }

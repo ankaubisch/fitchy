@@ -115,8 +115,8 @@ public final class Fitchy {
 		FitchyOptions option = Fitchy.getOptions();
 		FeatureReader reader = null;
 		try {
-			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class);
-			reader = constructor.newInstance(new FileInputStream(file));
+			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, FitchyOptions.class);
+			reader = constructor.newInstance(new FileInputStream(file), option);
 			
 			Feature feature = null;
 			while((feature = reader.read()) != null) {
