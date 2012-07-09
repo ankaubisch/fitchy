@@ -7,41 +7,8 @@ import de.kaubisch.fitchy.options.FitchConfig;
 import de.kaubisch.fitchy.store.FeatureContext;
 
 public class CustomOptionsApp {
-
-    public enum CustomFeatureStatus implements FeatureStatus {
-        ENABLED("an", true),
-        HIDDEN("hidden"),
-        DISABLED("aus", false);
-
-        private String systemName;
-        private boolean enabled, disabled;
-
-        private CustomFeatureStatus(String systemName) {
-            this(systemName, false);
-            this.disabled = false;
-        }
-
-        private CustomFeatureStatus(String systemName, boolean status) {
-            this.systemName = systemName;
-            this.enabled    = status;
-            this.disabled   = !status;
-        }
-
-        public String getSystemName() {
-            return systemName;
-        }
-
-        public boolean isEnabledStatus() {
-            return enabled;
-        }
-
-        public boolean isDisabledStatus() {
-            return disabled;
-        }
-    }
-
 	public static interface DummyInterface {
-		void doMethod();
+        void doMethod();
 	}
 
 	private class DummyImplementation implements DummyInterface {
@@ -56,7 +23,7 @@ public class CustomOptionsApp {
 	private DummyInterface sample;
 	
 	public CustomOptionsApp() {
-		FitchConfig options = FitchConfig.newOption(CustomFeatureStatus.class);
+		FitchConfig options = FitchConfig.getFromPropertiesStream(CustomOptionsApp.class.getResourceAsStream("/custom-fitchy-configuration.properties"));
         Fitchy.setConfig(options);
 
 		FeatureContext context = Fitchy.loadStoreFromResource("/sample_features_de.properties");
