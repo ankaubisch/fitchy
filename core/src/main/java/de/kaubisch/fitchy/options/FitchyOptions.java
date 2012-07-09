@@ -18,13 +18,18 @@
  */
 package de.kaubisch.fitchy.options;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import de.kaubisch.fitchy.FeatureObserver;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.StatusNotFoundException;
 import de.kaubisch.fitchy.loader.FeatureReader;
 import de.kaubisch.fitchy.loader.PropertyFeatureReader;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 
 public class FitchyOptions {
@@ -34,6 +39,8 @@ public class FitchyOptions {
 	public FeatureStatus disabled;
 	
 	public Class<? extends FeatureReader> readerClass;
+
+    public Class<? extends FeatureObserver> observerClass;
 	
 	public FitchyOptions() {
 		this.statusList  = new ArrayList<Enum<? extends FeatureStatus>>();
@@ -56,11 +63,27 @@ public class FitchyOptions {
 	}
 
 	public static FitchyOptions getDefault() {
-		FitchyOptions options = newOption(DefaultFeatureStatus.class);
-		options.readerClass = PropertyFeatureReader.class;
-		return options;
+        return getFromPropertiesStream(FitchyOptions.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
 	}
-	
+
+    public static FitchyOptions getFromPropertiesStream(InputStream is) {
+        FitchyOptions options = null;
+        Properties fitchyProperties = new Properties();
+        try {
+            fitchyProperties.load(is);
+            options = newOption((Class<? extends Enum<? extends FeatureStatus>>) Class.forName((String)fitchyProperties.get("fitchy.feature.status")));
+            options.readerClass = (Class<? extends FeatureReader>) Class.forName((String)fitchyProperties.get("fitchy.feature.reader"));
+            options.observerClass = (Class<? extends FeatureObserver>) Class.forName((String)fitchyProperties.get("fitchy.proxy.observer"));
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return options;
+    }
+
+
 	public FeatureStatus statusOf(String value) throws StatusNotFoundException {
 		FeatureStatus statusOfValue = null;
 		for(Enum< ? extends FeatureStatus> status : statusList) {

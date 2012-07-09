@@ -46,7 +46,7 @@ public class AnnotationRetrieverTest {
 
     @Test(timeout = 500)
     public void getAnnotation_WithAnnotation_ReturnAnnotation() throws Exception {
-        Test testAnnotation = retriever.getAnnotation(this.getClass().getMethod("testGetAnnotationSuccessful", new Class<?>[] {}));
+        Test testAnnotation = retriever.getAnnotation(this.getClass().getMethod("getAnnotation_WithAnnotation_ReturnAnnotation", new Class<?>[] {}));
         assertThat(testAnnotation.timeout(), is(500l));
     }
 }

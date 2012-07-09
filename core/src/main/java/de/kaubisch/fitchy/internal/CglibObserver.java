@@ -51,6 +51,11 @@ import java.lang.reflect.Method;
  */
 public class CglibObserver implements FeatureObserver {
 
+    /**
+     * Implementation of {@link MethodInterceptor} that is needed when you want to create
+     * a proxy with cglib. This Interceptor works the same way like
+     * {@link de.kaubisch.fitchy.internal.JavaProxyObserver.ProxyInvocationHandler}.
+     */
     public static class CglibMethodInterceptor implements MethodInterceptor {
 
         private Object origin;
@@ -60,6 +65,7 @@ public class CglibObserver implements FeatureObserver {
             this.origin = origin;
             this.context = context;
         }
+
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
 
             AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, origin.getClass());
