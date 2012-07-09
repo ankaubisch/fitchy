@@ -30,12 +30,24 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
+ * {@link JavaProxyObserver} is an implementation of {@link FeatureObserver}
+ * and uses the builtin java {@link Proxy} feature to surround object with a proxy.
+ * The source class needs to implement at least one interface.
+ * The internal static class {@link ProxyInvocationHandler} handles the method invocation
+ * of the proxied object.
+ *
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 6/24/12
  * Time: 1:01 PM
  */
 public class JavaProxyObserver implements FeatureObserver {
 
+    /**
+     * The {@link ProxyInvocationHandler} implementation that looks for
+     * a {@link FeatureSwitch} annotation which is marking the method and uses
+     * {@link FeatureContext} attribute to determine whether the method is called or not.
+     *
+     */
     public static class ProxyInvocationHandler implements InvocationHandler {
         private Object origin;
         private FeatureContext context;
@@ -45,6 +57,9 @@ public class JavaProxyObserver implements FeatureObserver {
             this.context = context;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
             AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, origin.getClass());
             Object result = null;
@@ -61,6 +76,9 @@ public class JavaProxyObserver implements FeatureObserver {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public <T> T observe(Object obj, FeatureContext context) {
         T proxyInstance = (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj, context));
         return proxyInstance;

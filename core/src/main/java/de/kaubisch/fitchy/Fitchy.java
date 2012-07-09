@@ -172,7 +172,7 @@ public final class Fitchy {
         return observer.observe(toObserve, context);
     }
 
-    public static <T> T observeWithObserver(T toObserve, FeatureContext context, Class<FeatureObserver> observerClass) {
+    public static <T> T observeWithObserver(T toObserve, FeatureContext context, Class<? extends FeatureObserver> observerClass) {
         try {
             FeatureObserver observer = observerClass.newInstance();
             return observer.observe(toObserve, context);
