@@ -18,12 +18,11 @@
  */
 package de.kaubisch.fitchy.resolver;
 
-import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.core.Is.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>

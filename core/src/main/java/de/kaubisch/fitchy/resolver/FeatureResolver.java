@@ -21,7 +21,7 @@ package de.kaubisch.fitchy.resolver;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.options.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchConfig;
 import de.kaubisch.fitchy.store.FeatureContext;
 
 /**
@@ -44,7 +44,7 @@ public class FeatureResolver {
     /**
      * This functions decides whether a feature is available or not. It processes the {@link FeatureSwitch} annotation
      * and lookup in {@link de.kaubisch.fitchy.store.FeatureContext} member variable if feature exists. When the annotation doesn't have set the
-     * status value so it check if the feature has the status enabled taken from current {@link FitchyOptions} object.
+     * status value so it check if the feature has the status enabled taken from current {@link de.kaubisch.fitchy.options.FitchConfig} object.
      *
      * @param annotation given annotation that needs to be checked
      * @return returns true if the annotation matches successful otherwise it returns false
@@ -52,7 +52,7 @@ public class FeatureResolver {
     public boolean isFeatureAvailable(FeatureSwitch annotation) {
         boolean found = false;
         if(annotation != null) {
-            FitchyOptions options = Fitchy.getOptions();
+            FitchConfig options = Fitchy.getConfig();
             String statusValue = annotation.status();
             if("".equals(statusValue)) {
                 statusValue = options.enabled.getSystemName();

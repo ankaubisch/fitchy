@@ -3,7 +3,7 @@ package de.kaubisch.fitchy.sample;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.options.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchConfig;
 import de.kaubisch.fitchy.store.FeatureContext;
 
 public class CustomOptionsApp {
@@ -56,8 +56,8 @@ public class CustomOptionsApp {
 	private DummyInterface sample;
 	
 	public CustomOptionsApp() {
-		FitchyOptions options = FitchyOptions.newOption(CustomFeatureStatus.class);
-        Fitchy.setOptions(options);
+		FitchConfig options = FitchConfig.newOption(CustomFeatureStatus.class);
+        Fitchy.setConfig(options);
 
 		FeatureContext context = Fitchy.loadStoreFromResource("/sample_features_de.properties");
 		

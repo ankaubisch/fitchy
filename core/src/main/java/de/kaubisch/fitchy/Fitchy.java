@@ -20,7 +20,7 @@ package de.kaubisch.fitchy;
 
 import de.kaubisch.fitchy.internal.JavaProxyObserver;
 import de.kaubisch.fitchy.loader.FeatureReader;
-import de.kaubisch.fitchy.options.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchConfig;
 import de.kaubisch.fitchy.store.FeatureContext;
 
 import java.io.*;
@@ -39,12 +39,12 @@ import java.util.ArrayList;
 public final class Fitchy {
 
 	/**
-	 * Holder class to provide singleton instance of {@link FitchyOptions}
+	 * Holder class to provide singleton instance of {@link de.kaubisch.fitchy.options.FitchConfig}
 	 * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
 	 *
 	 */
 	private static class Singleton {
-		public static final FitchyOptions OPTIONS = FitchyOptions.getDefault();
+		public static final FitchConfig CONFIG = FitchConfig.getDefault();
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public final class Fitchy {
 	 * @return a new {@link de.kaubisch.fitchy.store.FeatureContext} with loaded {@link Feature} items
 	 */
 	public static final FeatureContext loadStoreFromUrl(URL url) {
-		FeatureContext context = new FeatureContext(Fitchy.getOptions());
+		FeatureContext context = new FeatureContext(Fitchy.getConfig());
 		addFeaturesFromUrl(url, context);
 		return context;
 	}
@@ -112,10 +112,10 @@ public final class Fitchy {
 	 */
 	private static void fillStoreWithFeatures(FeatureContext context, File file)
 			throws FileNotFoundException {
-		FitchyOptions option = Fitchy.getOptions();
+		FitchConfig option = Fitchy.getConfig();
 		FeatureReader reader = null;
 		try {
-			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, FitchyOptions.class);
+			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, FitchConfig.class);
 			reader = constructor.newInstance(new FileInputStream(file), option);
 			
 			Feature feature = null;
@@ -136,27 +136,27 @@ public final class Fitchy {
 	}
 	
 	/**
-	 * Returns a singleton of {@link FitchyOptions}
+	 * Returns a singleton of {@link de.kaubisch.fitchy.options.FitchConfig}
 	 * 
-	 * @return one instance of {@link FitchyOptions}
+	 * @return one instance of {@link de.kaubisch.fitchy.options.FitchConfig}
 	 */
-	public static FitchyOptions getOptions() {
-		return Singleton.OPTIONS;
+	public static FitchConfig getConfig() {
+		return Singleton.CONFIG;
 	}
 
     /**
-     * Sets all values of current {@link FitchyOptions} to new values from passed options.
+     * Sets all values of current {@link de.kaubisch.fitchy.options.FitchConfig} to new values from passed config.
      *
-     * @param options {@link FitchyOptions} object with new values
+     * @param config {@link de.kaubisch.fitchy.options.FitchConfig} object with new values
      */
-    public static synchronized void setOptions(FitchyOptions options) {
-        FitchyOptions oldOptions = Singleton.OPTIONS;
-        if(options.readerClass != null) {
-            oldOptions.readerClass = options.readerClass;
+    public static synchronized void setConfig(FitchConfig config) {
+        FitchConfig oldConfig = Singleton.CONFIG;
+        if(config.readerClass != null) {
+            oldConfig.readerClass = config.readerClass;
         }
-        oldOptions.enabled = options.enabled;
-        oldOptions.disabled = options.disabled;
-        oldOptions.statusList = new ArrayList<Enum<? extends FeatureStatus>>(options.statusList);
+        oldConfig.enabled = config.enabled;
+        oldConfig.disabled = config.disabled;
+        oldConfig.statusList = new ArrayList<Enum<? extends FeatureStatus>>(config.statusList);
     }
 
     /**

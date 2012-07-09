@@ -19,9 +19,8 @@
 package de.kaubisch.fitchy.loader;
 
 import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.exception.UnsupportedFormatException;
-import de.kaubisch.fitchy.options.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,11 +43,11 @@ public class PropertyFeatureReader extends FeatureReader {
 	 * constructor of super class {@link FeatureReader}
 	 * 
 	 * @param is {@link InputStream} stream of a feature source
-     * @param options {@link FitchyOptions} current options that the reader can use to
+     * @param options {@link de.kaubisch.fitchy.options.FitchConfig} current options that the reader can use to
      *                                     determine which {@link de.kaubisch.fitchy.FeatureStatus}
      *                                     a {@link Feature} has.
 	 */
-	public PropertyFeatureReader(InputStream is, FitchyOptions options) {
+	public PropertyFeatureReader(InputStream is, FitchConfig options) {
 		super(is, options);
 		try {
 			rawEntryData = new Properties();

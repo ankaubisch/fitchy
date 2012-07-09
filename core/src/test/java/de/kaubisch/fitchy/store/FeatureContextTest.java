@@ -21,7 +21,7 @@ package de.kaubisch.fitchy.store;
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.FeatureAlreadyExistsException;
-import de.kaubisch.fitchy.options.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchConfig;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +36,13 @@ import static org.junit.Assert.*;
  */
 public class FeatureContextTest {
 
-    private FitchyOptions options;
+    private FitchConfig options;
 
     private FeatureContext context;
 
     @Before
     public void setUp() throws Exception {
-        options = FitchyOptions.getDefault();
+        options = FitchConfig.getDefault();
         context = new FeatureContext(options);
     }
 

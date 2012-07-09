@@ -21,7 +21,7 @@ package de.kaubisch.fitchy.store;
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.FeatureAlreadyExistsException;
-import de.kaubisch.fitchy.options.FitchyOptions;
+import de.kaubisch.fitchy.options.FitchConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,16 +35,16 @@ import java.util.Map;
 public class FeatureContext {
 
 	private Map<String, Feature> featureMap;
-	private FitchyOptions options;
+	private FitchConfig options;
 
     /**
-     * Initializes a new {@link FeatureContext} with given {@link FitchyOptions}
+     * Initializes a new {@link FeatureContext} with given {@link de.kaubisch.fitchy.options.FitchConfig}
      *
-     * @param options current {@link FitchyOptions} instance
+     * @param config current {@link de.kaubisch.fitchy.options.FitchConfig} instance
      */
-	public FeatureContext(FitchyOptions options) {
+	public FeatureContext(FitchConfig config) {
 		featureMap = new HashMap<String, Feature>();
-		this.options = options;
+		this.options = config;
 	}
 
     /**

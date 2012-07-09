@@ -18,12 +18,10 @@
  */
 package de.kaubisch.fitchy.options;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import de.kaubisch.fitchy.FeatureObserver;
 import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.StatusNotFoundException;
 import de.kaubisch.fitchy.loader.FeatureReader;
-import de.kaubisch.fitchy.loader.PropertyFeatureReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +30,7 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class FitchyOptions {
+public class FitchConfig {
 	public List<Enum<? extends FeatureStatus>> statusList;
 	
 	public FeatureStatus enabled;
@@ -42,12 +40,12 @@ public class FitchyOptions {
 
     public Class<? extends FeatureObserver> observerClass;
 	
-	public FitchyOptions() {
+	public FitchConfig() {
 		this.statusList  = new ArrayList<Enum<? extends FeatureStatus>>();
 	}
 
-	public static FitchyOptions newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
-		FitchyOptions option = new FitchyOptions();
+	public static FitchConfig newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
+		FitchConfig option = new FitchConfig();
 		if(Enum.class.isAssignableFrom(status)) {
 			for(Enum<? extends FeatureStatus> e : status.getEnumConstants()) {
 				option.statusList.add(e);
@@ -62,12 +60,12 @@ public class FitchyOptions {
 		return option;
 	}
 
-	public static FitchyOptions getDefault() {
-        return getFromPropertiesStream(FitchyOptions.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
+	public static FitchConfig getDefault() {
+        return getFromPropertiesStream(FitchConfig.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
 	}
 
-    public static FitchyOptions getFromPropertiesStream(InputStream is) {
-        FitchyOptions options = null;
+    public static FitchConfig getFromPropertiesStream(InputStream is) {
+        FitchConfig options = null;
         Properties fitchyProperties = new Properties();
         try {
             fitchyProperties.load(is);
