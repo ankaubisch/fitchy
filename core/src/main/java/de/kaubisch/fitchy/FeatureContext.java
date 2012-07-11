@@ -16,12 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.store;
+package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.FeatureAlreadyExistsException;
-import de.kaubisch.fitchy.options.FitchConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,14 +32,14 @@ import java.util.Map;
 public class FeatureContext {
 
 	private Map<String, Feature> featureMap;
-	private FitchConfig options;
+	private FitchyConfig options;
 
     /**
-     * Initializes a new {@link FeatureContext} with given {@link de.kaubisch.fitchy.options.FitchConfig}
+     * Initializes a new {@link FeatureContext} with given {@link FitchyConfig}
      *
-     * @param config current {@link de.kaubisch.fitchy.options.FitchConfig} instance
+     * @param config current {@link FitchyConfig} instance
      */
-	public FeatureContext(FitchConfig config) {
+	public FeatureContext(FitchyConfig config) {
 		featureMap = new HashMap<String, Feature>();
 		this.options = config;
 	}

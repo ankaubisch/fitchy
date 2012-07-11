@@ -23,7 +23,7 @@ import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
 import de.kaubisch.fitchy.resolver.AnnotationRetriever;
 import de.kaubisch.fitchy.resolver.FeatureResolver;
-import de.kaubisch.fitchy.store.FeatureContext;
+import de.kaubisch.fitchy.FeatureContext;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

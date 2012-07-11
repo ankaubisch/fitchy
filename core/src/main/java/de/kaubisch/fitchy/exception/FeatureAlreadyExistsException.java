@@ -19,7 +19,7 @@
 package de.kaubisch.fitchy.exception;
 
 /**
- * Exception is thrown from {@link de.kaubisch.fitchy.store.FeatureContext} when the system wants
+ * Exception is thrown from {@link de.kaubisch.fitchy.FeatureContext} when the system wants
  * to add a feature if it already added.
  *
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>

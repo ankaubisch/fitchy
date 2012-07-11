@@ -16,12 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.store;
+package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.FeatureAlreadyExistsException;
-import de.kaubisch.fitchy.options.FitchConfig;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +33,13 @@ import static org.junit.Assert.*;
  */
 public class FeatureContextTest {
 
-    private FitchConfig options;
+    private FitchyConfig options;
 
     private FeatureContext context;
 
     @Before
     public void setUp() throws Exception {
-        options = FitchConfig.getDefault();
+        options = FitchyConfig.getDefault();
         context = new FeatureContext(options);
     }
 

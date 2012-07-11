@@ -18,21 +18,70 @@
  */
 package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.store.FeatureContext;
-
+/**
+ * Abstract class that provides a possibility to check whether
+ * a feature is enabled or disabled. When you want to check inline
+ * a function and not the function itself then use an anonymous implementation
+ * of this abstract class.
+ * <br />
+ * <strong>example:get different String in case feature is enabled oder disabled.</strong>
+ * <br />
+ * <pre>
+ * {@code
+ *  FeatureContext context = new FeatureContext(Fitchy.getConfig());
+ *  String resultDependingOnFeature = new FeatureChecker<String>(context, "test.feature") {
+ *      public String onFeatureDisabled() {
+ *          return "feature is disabled";
+ *      }
+ *
+ *      public String onFeatureEnabled() {
+ *          return "feature is enabled";
+ *      }
+ *
+ *  }).run();
+ *  System.out,println(resultDependingOnFeature); //should print "feature is disabled"
+ * }
+ * </pre>
+ *
+ * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * Date: 7/11/12
+ * Time: 6:55 PM
+ *
+ * @param <T> class that this checker should return when calling {@link de.kaubisch.fitchy.FeatureChecker#run()}
+ */
 public abstract class FeatureChecker<T> {
 
 	private FeatureContext context;
 	private String featureName;
-	
+
+
 	public FeatureChecker(FeatureContext storage, String featureName) {
 		this.context = storage;
 		this.featureName = featureName;
 	}
-	
+
+    /**
+     * This function is called when the feature is enabled.
+     *
+     * @return T result that should be returned when feature is enabled.
+     */
 	public abstract T onFeatureEnabled();
+
+    /**
+     * This function is called when the feature is disabled.
+     *
+     * @return T result that should be returned when feature is disabled.
+     */
 	public abstract T onFeatureDisabled();
-	
+
+    /**
+     * Executing this function starts calling {@link FeatureContext} and
+     * ask if feature is enabled. Then it calls either {@link FeatureChecker#onFeatureEnabled()}
+     * or {@link FeatureChecker#onFeatureDisabled()} of the implementation and
+     * return the results.
+     *
+     * @return T result that is returned from implementation.
+     */
 	public T run() {
 		T result = null;
 		if(context.hasFeature(featureName)) {

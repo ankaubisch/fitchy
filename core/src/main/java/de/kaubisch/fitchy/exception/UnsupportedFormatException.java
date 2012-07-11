@@ -21,7 +21,7 @@ package de.kaubisch.fitchy.exception;
 import java.io.InputStream;
 
 /**
- * Exception that is thrown if a {@link de.kaubisch.fitchy.loader.FeatureReader} cannot read {@link InputStream}
+ * Exception that is thrown if a {@link de.kaubisch.fitchy.FeatureReader} cannot read {@link InputStream}
  * format.
  * 
  * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>

@@ -18,8 +18,6 @@
  */
 package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.store.FeatureContext;
-
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 6/24/12

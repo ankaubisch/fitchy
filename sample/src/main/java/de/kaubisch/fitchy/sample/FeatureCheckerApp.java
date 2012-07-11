@@ -2,7 +2,7 @@ package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.FeatureChecker;
 import de.kaubisch.fitchy.Fitchy;
-import de.kaubisch.fitchy.store.FeatureContext;
+import de.kaubisch.fitchy.FeatureContext;
 
 public class FeatureCheckerApp {
 

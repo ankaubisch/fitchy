@@ -16,11 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.loader;
+package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.exception.UnsupportedFormatException;
-import de.kaubisch.fitchy.options.FitchConfig;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -36,17 +34,17 @@ public abstract class FeatureReader implements Closeable {
 	
 	protected InputStream is;
 
-    protected FitchConfig options;
+    protected FitchyConfig options;
 
 	/**
 	 * Constructor that needs an open {@link InputStream} instance.
 	 * 
 	 * @param is {@link InputStream} source of a source that contains features
-     * @param options {@link de.kaubisch.fitchy.options.FitchConfig} current options that the reader can use to
+     * @param options {@link FitchyConfig} current options that the reader can use to
      *                                     determine which {@link de.kaubisch.fitchy.FeatureStatus}
      *                                     a {@link Feature} has.
      */
-	public FeatureReader(InputStream is, FitchConfig options) {
+	public FeatureReader(InputStream is, FitchyConfig options) {
 		this.is = is;
         this.options = options;
 	}

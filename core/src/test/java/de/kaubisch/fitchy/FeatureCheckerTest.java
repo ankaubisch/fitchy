@@ -16,47 +16,56 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.resolver;
+package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.options.DefaultFeatureStatus;
-import de.kaubisch.fitchy.FeatureContext;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.junit.Assert.*;
-
-import static org.mockito.Mockito.when;
 
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
- * Date: 6/22/12
- * Time: 12:41 PM
+ * Date: 7/11/12
+ * Time: 6:55 PM
  */
 @RunWith(MockitoJUnitRunner.class)
-public class FeatureResolverTest {
-
+public class FeatureCheckerTest {
     @Mock
-    FeatureContext context;
+    private FeatureContext context;
 
-    @Mock
-    FeatureSwitch annotation;
+    private String featureName;
 
-    private FeatureResolver resolver;
+    private FeatureChecker<String> checker;
 
     @Before
-    public void setUp() throws Exception {
-        resolver = new FeatureResolver(context);
+    public void setUp() {
+        checker = new FeatureChecker<String>(context, "test.feature") {
+            @Override
+            public String onFeatureEnabled() {
+                return "enabled";
+            }
+
+            @Override
+            public String onFeatureDisabled() {
+                return "disabled";
+            }
+        };
     }
 
     @Test
-    public void IsFeatureAvailable_WithoutAnnotationStatus_ReturnsTrue() throws Exception {
-        when(context.featureHasStatus("test.feature", DefaultFeatureStatus.ON)).thenReturn(true);
-        when(annotation.value()).thenReturn("test.feature");
-        when(annotation.status()).thenReturn("");
-        assertTrue(resolver.isFeatureAvailable(annotation));
+    public void run_WithFeature_ReturnEnabled(){
+        when(context.hasFeature("test.feature")).thenReturn(true);
+
+        assertEquals("checker should return 'enabled' string", "enabled", checker.run());
     }
 
+    @Test
+    public void run_WithoutFeature_ReturnDisabled() {
+        when(context.hasFeature("test.feature")).thenReturn(false);
+        assertEquals("checker should return 'disabled' string", "disabled", checker.run());
+    }
 }

@@ -23,7 +23,7 @@ import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
 import de.kaubisch.fitchy.resolver.AnnotationRetriever;
 import de.kaubisch.fitchy.resolver.FeatureResolver;
-import de.kaubisch.fitchy.store.FeatureContext;
+import de.kaubisch.fitchy.FeatureContext;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -112,7 +112,7 @@ public class CglibObserver implements FeatureObserver {
         boolean hasStandardConstructor = false;
         try {
             Constructor c = sourceClass.getConstructor(new Class<?>[]{});
-            hasStandardConstructor = true;
+            hasStandardConstructor = c != null;
         } catch (NoSuchMethodException e) {
             hasStandardConstructor = false;
         }

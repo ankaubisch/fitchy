@@ -18,10 +18,12 @@
  */
 package de.kaubisch.fitchy.options;
 
+import de.kaubisch.fitchy.FitchyConfig;
+
 import java.io.Serializable;
 
 /**
- * Abstract class that provides function to set and get {@link FitchConfig} to an Object.
+ * Abstract class that provides function to set and get {@link de.kaubisch.fitchy.FitchyConfig} to an Object.
  *
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 7/3/12
@@ -29,31 +31,31 @@ import java.io.Serializable;
  */
 public abstract class HasFitchyConfig implements Serializable {
 
-    protected FitchConfig options;
+    protected FitchyConfig options;
 
     /**
      * Initializes current object with an option
      *
-     * @param options {@link FitchConfig} current option
+     * @param options {@link de.kaubisch.fitchy.FitchyConfig} current option
      */
-    public HasFitchyConfig(FitchConfig options) {
+    public HasFitchyConfig(FitchyConfig options) {
         this.options = options;
     }
 
     /**
-     * Returns current {@link FitchConfig}
-     * @return {@link FitchConfig}
+     * Returns current {@link de.kaubisch.fitchy.FitchyConfig}
+     * @return {@link de.kaubisch.fitchy.FitchyConfig}
      */
-    public FitchConfig getConfig() {
+    public FitchyConfig getConfig() {
         return options;
     }
 
     /**
-     * Sets new {@link FitchConfig} to object. If passed config
+     * Sets new {@link de.kaubisch.fitchy.FitchyConfig} to object. If passed config
      * argument is null the old config will not be overridden.
-     * @param options {@link FitchConfig} new config
+     * @param options {@link de.kaubisch.fitchy.FitchyConfig} new config
      */
-    public void setConfig(FitchConfig options) {
+    public void setConfig(FitchyConfig options) {
         this.options = options;
     }
 }

@@ -18,11 +18,6 @@
  */
 package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.internal.JavaProxyObserver;
-import de.kaubisch.fitchy.loader.FeatureReader;
-import de.kaubisch.fitchy.options.FitchConfig;
-import de.kaubisch.fitchy.store.FeatureContext;
-
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
@@ -39,12 +34,12 @@ import java.util.ArrayList;
 public final class Fitchy {
 
 	/**
-	 * Holder class to provide singleton instance of {@link de.kaubisch.fitchy.options.FitchConfig}
+	 * Holder class to provide singleton instance of {@link FitchyConfig}
 	 * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
 	 *
 	 */
 	private static class Singleton {
-		public static final FitchConfig CONFIG = FitchConfig.getDefault();
+		public static final FitchyConfig CONFIG = FitchyConfig.getDefault();
 	}
 	
 	/**
@@ -55,36 +50,36 @@ public final class Fitchy {
 	
 	/**
 	 * Loads a resource from classpath with ClassLoader of this class.
-	 * Always returns an instance of {@link de.kaubisch.fitchy.store.FeatureContext} wether it can read
+	 * Always returns an instance of {@link FeatureContext} wether it can read
 	 * the resource or not.
 	 * 
 	 * @param resourceName name of the resource in classpath
-	 * @return an instance of {@link de.kaubisch.fitchy.store.FeatureContext}
+	 * @return an instance of {@link FeatureContext}
 	 */
-	public static final FeatureContext loadStoreFromResource(String resourceName) {
+	public static FeatureContext loadStoreFromResource(String resourceName) {
 		return loadStoreFromUrl(Fitchy.class.getResource(resourceName));
 	}
 	
 	/**
 	 * Loads a resource with feature configuration from an {@link URL} and stores all
-	 * of this in a new {@link de.kaubisch.fitchy.store.FeatureContext} and returns it.
+	 * of this in a new {@link FeatureContext} and returns it.
 	 *  
 	 * @param url an {@link URL} to a resource with feature configuration
 	 * 
-	 * @return a new {@link de.kaubisch.fitchy.store.FeatureContext} with loaded {@link Feature} items
+	 * @return a new {@link FeatureContext} with loaded {@link Feature} items
 	 */
-	public static final FeatureContext loadStoreFromUrl(URL url) {
+	public static FeatureContext loadStoreFromUrl(URL url) {
 		FeatureContext context = new FeatureContext(Fitchy.getConfig());
 		addFeaturesFromUrl(url, context);
 		return context;
 	}
 	
 	/**
-	 * Add all features from url resource to existing {@link de.kaubisch.fitchy.store.FeatureContext}.
+	 * Add all features from url resource to existing {@link FeatureContext}.
 	 * This overrides existing {@link Feature} added to storage.
 	 * 
 	 * @param url an {@link URL} to a resource that contains features
-	 * @param context a {@link de.kaubisch.fitchy.store.FeatureContext} that holds all features
+	 * @param context a {@link FeatureContext} that holds all features
 	 */
 	public static void addFeaturesFromUrl(URL url, FeatureContext context) {
 		if(url != null) {
@@ -104,18 +99,18 @@ public final class Fitchy {
 	/**
 	 * Retrieves current options and the {@link FeatureReader} class that is set to this options.
 	 * Create an instance of this {@link FeatureReader} and loads all Features from File and put them
-	 * into {@link de.kaubisch.fitchy.store.FeatureContext}.
+	 * into {@link FeatureContext}.
 	 * 
-	 * @param context an instance of {@link de.kaubisch.fitchy.store.FeatureContext}
+	 * @param context an instance of {@link FeatureContext}
 	 * @param file {@link File} full of features
 	 * @throws FileNotFoundException is thrown if {@link File} is not found
 	 */
 	private static void fillStoreWithFeatures(FeatureContext context, File file)
 			throws FileNotFoundException {
-		FitchConfig option = Fitchy.getConfig();
+		FitchyConfig option = Fitchy.getConfig();
 		FeatureReader reader = null;
 		try {
-			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, FitchConfig.class);
+			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, FitchyConfig.class);
 			reader = constructor.newInstance(new FileInputStream(file), option);
 			
 			Feature feature = null;
@@ -136,21 +131,21 @@ public final class Fitchy {
 	}
 	
 	/**
-	 * Returns a singleton of {@link de.kaubisch.fitchy.options.FitchConfig}
+	 * Returns a singleton of {@link FitchyConfig}
 	 * 
-	 * @return one instance of {@link de.kaubisch.fitchy.options.FitchConfig}
+	 * @return one instance of {@link FitchyConfig}
 	 */
-	public static FitchConfig getConfig() {
+	public static FitchyConfig getConfig() {
 		return Singleton.CONFIG;
 	}
 
     /**
-     * Sets all values of current {@link de.kaubisch.fitchy.options.FitchConfig} to new values from passed config.
+     * Sets all values of current {@link FitchyConfig} to new values from passed config.
      *
-     * @param config {@link de.kaubisch.fitchy.options.FitchConfig} object with new values
+     * @param config {@link FitchyConfig} object with new values
      */
-    public static synchronized void setConfig(FitchConfig config) {
-        FitchConfig oldConfig = Singleton.CONFIG;
+    public static synchronized void setConfig(FitchyConfig config) {
+        FitchyConfig oldConfig = Singleton.CONFIG;
         if(config.readerClass != null) {
             oldConfig.readerClass = config.readerClass;
         }
@@ -164,12 +159,11 @@ public final class Fitchy {
      * method calls with {@link de.kaubisch.fitchy.annotation.FeatureSwitch} annotated.
      *
      * @param toObserve object that needs to be observed
-     * @param context current {@link de.kaubisch.fitchy.store.FeatureContext}
+     * @param context current {@link FeatureContext}
      * @return returns observed object
      */
     public static <T> T observe(T toObserve, FeatureContext context) {
-        FeatureObserver observer = new JavaProxyObserver();
-        return observer.observe(toObserve, context);
+        return observeWithObserver(toObserve, context, getConfig().observerClass);
     }
 
     public static <T> T observeWithObserver(T toObserve, FeatureContext context, Class<? extends FeatureObserver> observerClass) {

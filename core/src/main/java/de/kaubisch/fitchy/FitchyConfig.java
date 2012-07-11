@@ -16,12 +16,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.options;
+package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.FeatureObserver;
-import de.kaubisch.fitchy.FeatureStatus;
 import de.kaubisch.fitchy.exception.StatusNotFoundException;
-import de.kaubisch.fitchy.loader.FeatureReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +27,7 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class FitchConfig {
+public class FitchyConfig {
 	public List<Enum<? extends FeatureStatus>> statusList;
 	
 	public FeatureStatus enabled;
@@ -40,12 +37,12 @@ public class FitchConfig {
 
     public Class<? extends FeatureObserver> observerClass;
 	
-	public FitchConfig() {
+	public FitchyConfig() {
 		this.statusList  = new ArrayList<Enum<? extends FeatureStatus>>();
 	}
 
-	public static FitchConfig newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
-		FitchConfig option = new FitchConfig();
+	public static FitchyConfig newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
+		FitchyConfig option = new FitchyConfig();
 		if(Enum.class.isAssignableFrom(status)) {
 			for(Enum<? extends FeatureStatus> e : status.getEnumConstants()) {
 				option.statusList.add(e);
@@ -60,12 +57,12 @@ public class FitchConfig {
 		return option;
 	}
 
-	public static FitchConfig getDefault() {
-        return getFromPropertiesStream(FitchConfig.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
+	public static FitchyConfig getDefault() {
+        return getFromPropertiesStream(FitchyConfig.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
 	}
 
-    public static FitchConfig getFromPropertiesStream(InputStream is) {
-        FitchConfig options = null;
+    public static FitchyConfig getFromPropertiesStream(InputStream is) {
+        FitchyConfig options = null;
         Properties fitchyProperties = new Properties();
         try {
             fitchyProperties.load(is);

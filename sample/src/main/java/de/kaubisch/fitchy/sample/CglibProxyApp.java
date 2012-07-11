@@ -19,10 +19,10 @@
 package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.Fitchy;
+import de.kaubisch.fitchy.FitchyConfig;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.internal.CglibObserver;
-import de.kaubisch.fitchy.options.FitchConfig;
-import de.kaubisch.fitchy.store.FeatureContext;
+import de.kaubisch.fitchy.FeatureContext;
 
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
@@ -44,7 +44,7 @@ public class CglibProxyApp {
 
     public static void main(String[] args) {
         FeatureContext context = Fitchy.loadStoreFromResource("/sample_features.properties");
-        FitchConfig options = Fitchy.getConfig();
+        FitchyConfig options = Fitchy.getConfig();
         CglibProxyApp app = Fitchy.observeWithObserver(new CglibProxyApp("Hello world"), context, CglibObserver.class);
 
         System.out.println("Message:" + app.getMessage());
