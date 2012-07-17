@@ -18,12 +18,9 @@
  */
 package de.kaubisch.fitchy.internal;
 
-import de.kaubisch.fitchy.FeatureObserver;
-import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
-import de.kaubisch.fitchy.resolver.AnnotationRetriever;
-import de.kaubisch.fitchy.resolver.FeatureResolver;
 import de.kaubisch.fitchy.FeatureContext;
+import de.kaubisch.fitchy.FeatureObserver;
+import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -66,21 +63,8 @@ public class CglibObserver implements FeatureObserver {
             this.context = context;
         }
 
-        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-
-            AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, origin.getClass());
-            Object result = null;
-            try {
-                FeatureSwitch featureSwitch = retriever.getAnnotation(method);
-                FeatureResolver resolver = new FeatureResolver(context);
-                if(resolver.isFeatureAvailable(featureSwitch)) {
-                    result = method.invoke(origin, objects);
-                }
-            } catch (AnnotationNotFoundException e) {
-                result = method.invoke(origin, objects);
-            }
-
-            return result;
+        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) {
+            return new AnnotatedMethodInvoker(origin, new FeatureResolverFactory(context)).invoke(method, objects);
         }
     }
 
@@ -120,6 +104,15 @@ public class CglibObserver implements FeatureObserver {
         return hasStandardConstructor;
     }
 
+    /**
+     * Searches source class for all available constructor and take the first that not have a primitive class
+     * in his arguments. After that the function will use cglib to create a proxy and return it.
+     *
+     * @param e current {@link Enhancer} of cglib
+     * @param toObserve source object that needs to be surrounded from a proxy
+     * @param <T> target class
+     * @return a proxied target class instance surrounding toObserve
+     */
     private <T> T createProxyWithFirstUsableConstructor(Enhancer e, Object toObserve) {
         T proxiedObject = null;
         Constructor[] constructors = toObserve.getClass().getConstructors();

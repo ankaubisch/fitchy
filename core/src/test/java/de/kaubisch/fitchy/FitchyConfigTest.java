@@ -16,35 +16,19 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.exception;
+package de.kaubisch.fitchy;
+
+import org.junit.Before;
 
 /**
- * Exception that is thrown if a {@link de.kaubisch.fitchy.FeatureReader} cannot read {@link java.io.InputStream}
- * format.
- * 
- * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * Date: 7/11/12
+ * Time: 9:00 PM
  */
-public class UnsupportedFormatException extends RuntimeException {
+public class FitchyConfigTest {
 
-	public UnsupportedFormatException() {
-		super();
-	}
+    @Before
+    public void setUp() {
 
-	public UnsupportedFormatException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
-
-	public UnsupportedFormatException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public UnsupportedFormatException(String message) {
-		super(message);
-	}
-
-	public UnsupportedFormatException(Throwable cause) {
-		super(cause);
-	}
-
+    }
 }

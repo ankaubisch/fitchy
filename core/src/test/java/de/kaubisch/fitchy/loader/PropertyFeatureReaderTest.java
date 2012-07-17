@@ -21,6 +21,7 @@ package de.kaubisch.fitchy.loader;
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FitchyConfig;
 import de.kaubisch.fitchy.exception.UnsupportedFormatException;
+import de.kaubisch.fitchy.internal.PropertyFeatureReader;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;

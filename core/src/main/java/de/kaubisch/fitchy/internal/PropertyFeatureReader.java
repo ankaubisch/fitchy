@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.loader;
+package de.kaubisch.fitchy.internal;
 
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureReader;
@@ -66,7 +66,7 @@ public class PropertyFeatureReader extends FeatureReader {
 	 * @see de.kaubisch.fitchy.FeatureReader#read()
 	 */
 	@Override
-	public Feature read() throws UnsupportedFormatException {
+	public Feature read() {
         if(keyEnum == null || rawEntryData == null) {
             throw new UnsupportedFormatException("unable from InputStream");
         }

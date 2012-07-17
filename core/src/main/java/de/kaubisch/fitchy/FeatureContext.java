@@ -56,7 +56,7 @@ public class FeatureContext {
      * @return a new {@link Feature} implementation that was added to context
      * @throws FeatureAlreadyExistsException is thrown if the feature already exists in context
      */
-	public Feature addFeature(String key) throws FeatureAlreadyExistsException {
+	public Feature addFeature(String key) {
         if(key == null || "".equals(key.trim())) {
             throw new IllegalArgumentException("key argument must be a value");
         }
@@ -79,7 +79,7 @@ public class FeatureContext {
      * @return if feature is added to context the feature argument is returned.
      * @throws FeatureAlreadyExistsException is thrown when feature already exists in context
      */
-	public Feature addFeature(Feature feature) throws FeatureAlreadyExistsException {
+	public Feature addFeature(Feature feature) {
         if(feature == null) {
             throw new IllegalArgumentException("feature argument must be an instance");
         }

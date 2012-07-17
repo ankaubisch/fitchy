@@ -19,7 +19,7 @@
 package de.kaubisch.fitchy.resolver;
 
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.options.DefaultFeatureStatus;
+import de.kaubisch.fitchy.internal.DefaultFeatureStatus;
 import de.kaubisch.fitchy.FeatureContext;
 import org.junit.Before;
 import org.junit.Test;

@@ -79,7 +79,7 @@ public class FitchyConfig {
     }
 
 
-	public FeatureStatus statusOf(String value) throws StatusNotFoundException {
+	public FeatureStatus statusOf(String value) {
 		FeatureStatus statusOfValue = null;
 		for(Enum< ? extends FeatureStatus> status : statusList) {
             FeatureStatus featureStatus = (FeatureStatus)status;
@@ -95,7 +95,7 @@ public class FitchyConfig {
 		return statusOfValue;
 	}
 
-    public FeatureStatus statusOfName(String name) throws StatusNotFoundException {
+    public FeatureStatus statusOfName(String name) {
         FeatureStatus statusOfName = null;
         for(Enum<? extends FeatureStatus> status : statusList) {
             if(status.name().equals(name)) {

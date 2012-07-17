@@ -18,12 +18,9 @@
  */
 package de.kaubisch.fitchy.internal;
 
-import de.kaubisch.fitchy.FeatureObserver;
-import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
-import de.kaubisch.fitchy.resolver.AnnotationRetriever;
-import de.kaubisch.fitchy.resolver.FeatureResolver;
 import de.kaubisch.fitchy.FeatureContext;
+import de.kaubisch.fitchy.FeatureObserver;
+import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -44,7 +41,7 @@ public class JavaProxyObserver implements FeatureObserver {
 
     /**
      * The {@link ProxyInvocationHandler} implementation that looks for
-     * a {@link FeatureSwitch} annotation which is marking the method and uses
+     * a {@link de.kaubisch.fitchy.annotation.FeatureSwitch} annotation which is marking the method and uses
      * {@link FeatureContext} attribute to determine whether the method is called or not.
      *
      */
@@ -60,19 +57,8 @@ public class JavaProxyObserver implements FeatureObserver {
         /**
          * {@inheritDoc}
          */
-        public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-            AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, origin.getClass());
-            Object result = null;
-            try {
-                FeatureSwitch featureSwitch = retriever.getAnnotation(method);
-                FeatureResolver resolver = new FeatureResolver(context);
-                if(resolver.isFeatureAvailable(featureSwitch)) {
-                    result = method.invoke(origin, objects);
-                }
-            } catch (AnnotationNotFoundException e) {
-                result = method.invoke(origin, objects);
-            }
-            return result;
+        public Object invoke(Object o, Method method, Object[] objects) {
+            return new AnnotatedMethodInvoker(origin, new FeatureResolverFactory(context)).invoke(method, objects);
         }
     }
 
@@ -80,7 +66,6 @@ public class JavaProxyObserver implements FeatureObserver {
      * {@inheritDoc}
      */
     public <T> T observe(Object obj, FeatureContext context) {
-        T proxyInstance = (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj, context));
-        return proxyInstance;
+        return (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj, context));
     }
 }

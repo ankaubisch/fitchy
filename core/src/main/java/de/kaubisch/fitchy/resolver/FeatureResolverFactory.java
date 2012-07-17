@@ -16,35 +16,24 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.exception;
+package de.kaubisch.fitchy.resolver;
+
+import de.kaubisch.fitchy.FeatureContext;
 
 /**
- * Exception that is thrown if a {@link de.kaubisch.fitchy.FeatureReader} cannot read {@link java.io.InputStream}
- * format.
- * 
- * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * Date: 7/13/12
+ * Time: 11:44 AM
  */
-public class UnsupportedFormatException extends RuntimeException {
+public class FeatureResolverFactory {
 
-	public UnsupportedFormatException() {
-		super();
-	}
+    private FeatureContext context;
 
-	public UnsupportedFormatException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
+    public FeatureResolverFactory(FeatureContext context) {
+        this.context = context;
+    }
 
-	public UnsupportedFormatException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public UnsupportedFormatException(String message) {
-		super(message);
-	}
-
-	public UnsupportedFormatException(Throwable cause) {
-		super(cause);
-	}
-
+    public FeatureResolver createResolver() {
+        return new FeatureResolver(context);
+    }
 }

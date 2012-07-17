@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.options;
+package de.kaubisch.fitchy.internal;
 
 import de.kaubisch.fitchy.FeatureStatus;
 

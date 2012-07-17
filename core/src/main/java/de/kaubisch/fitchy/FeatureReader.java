@@ -18,8 +18,6 @@
  */
 package de.kaubisch.fitchy;
 
-import de.kaubisch.fitchy.exception.UnsupportedFormatException;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,9 +54,8 @@ public abstract class FeatureReader implements Closeable {
 	 * next {@link Feature} element.
 	 * 
 	 * @return {@link Feature} current Feature element
-	 * @throws UnsupportedFormatException is thrown if reader doesn't understand stream format
 	 */
-	public abstract Feature read() throws UnsupportedFormatException;
+	public abstract Feature read();
 
 	/* (non-Javadoc)
 	 * @see java.io.Closeable#close()
