@@ -19,14 +19,14 @@
 package de.kaubisch.fitchy.internal;
 
 import de.kaubisch.fitchy.FeatureContext;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.Proxy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -34,19 +34,19 @@ import static org.hamcrest.CoreMatchers.*;
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 7/17/12
- * Time: 8:09 PM
+ * Time: 8:42 PM
  */
 @RunWith(MockitoJUnitRunner.class)
-public class JavaProxyObserverTest {
+public class CglibObserverTest {
 
     @Mock
     private FeatureContext context;
 
-    private JavaProxyObserver observer;
+    private CglibObserver observer;
 
     @Before
     public void setUp() {
-        observer = new JavaProxyObserver();
+        observer = new CglibObserver();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -59,19 +59,34 @@ public class JavaProxyObserverTest {
         observer.observe(null, context);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void observe_WithoutImplementingObject_throwsException() {
-        observer.observe(new JavaProxyObserverTest(), context);
+    @Test
+    public void observe_WithStandardConstructorObject_ReturnsProxy() {
+        CglibObserverTest test = observer.observe(new CglibObserverTest(), context);
+        assertThat(Enhancer.isEnhanced(test.getClass()), is(equalTo(true)));
     }
 
     @Test
-    public void observe_withObject_returnsInvocationHandler() {
-        Serializable object = observer.observe(new JavaProxiedClass(), context);
-        assertThat(Proxy.isProxyClass(object.getClass()),equalTo(true));
-        assertThat(Proxy.getInvocationHandler(object).getClass().toString(), equalTo(JavaProxyObserver.ProxyInvocationHandler.class.toString()));
+    public void observe_WithObjectConstructorObject_ReturnsProxy() {
+        CglibProxiedObjectConstructorClass test = observer.observe(new CglibProxiedObjectConstructorClass("test"), context);
+        assertThat(Enhancer.isEnhanced(test.getClass()), is(equalTo(true)));
+    }
+
+    @Test
+    public void observe_WithNativeConstructorObject_ReturnsNull() {
+        CglibProxiedNativeConstructorClass test = observer.observe(new CglibProxiedNativeConstructorClass(1), context);
+        assertThat(test, is(nullValue()));
     }
 }
 
-class JavaProxiedClass implements Serializable {
+class CglibProxiedObjectConstructorClass {
 
+    public CglibProxiedObjectConstructorClass(String test) {
+
+    }
+}
+
+class CglibProxiedNativeConstructorClass {
+    public CglibProxiedNativeConstructorClass(int i) {
+
+    }
 }

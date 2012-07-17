@@ -28,6 +28,8 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import static de.kaubisch.fitchy.internal.Preconditions.*;
+
 /**
  * {@link CglibObserver} is a {@link FeatureObserver} implementation
  * that uses cglib to surround source object with a proxy. cglib doesn't
@@ -72,6 +74,9 @@ public class CglibObserver implements FeatureObserver {
      * {@inheritDoc}
      */
     public <T> T observe(Object toObserve, FeatureContext context) {
+        throwIllegalArgumentExceptionIfNull(context, "FeatureContext instance is required.");
+        throwIllegalArgumentExceptionIfNull(toObserve, "Observable object is required.");
+
         Enhancer e = new Enhancer();
         e.setSuperclass(toObserve.getClass());
         e.setCallback(new CglibMethodInterceptor(toObserve, context));

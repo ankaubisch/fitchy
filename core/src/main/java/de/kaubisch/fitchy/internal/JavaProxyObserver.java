@@ -26,6 +26,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import static de.kaubisch.fitchy.internal.Preconditions.*;
+
 /**
  * {@link JavaProxyObserver} is an implementation of {@link FeatureObserver}
  * and uses the builtin java {@link Proxy} feature to surround object with a proxy.
@@ -66,12 +68,8 @@ public class JavaProxyObserver implements FeatureObserver {
      * {@inheritDoc}
      */
     public <T> T observe(Object obj, FeatureContext context) {
-        if(context == null) {
-            throw new IllegalArgumentException("FeatureContext instance is required.");
-        }
-        if(obj == null) {
-            throw new IllegalArgumentException("observable object is required.");
-        }
+        throwIllegalArgumentExceptionIfNull(context, "FeatureContext instance is required.");
+        throwIllegalArgumentExceptionIfNull(obj, "observable object is required.");
         if(obj.getClass().getInterfaces().length == 0) {
             throw new IllegalArgumentException("observable object must implement an interface.");
         }
