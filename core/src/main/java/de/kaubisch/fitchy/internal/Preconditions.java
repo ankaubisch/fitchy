@@ -20,7 +20,7 @@ package de.kaubisch.fitchy.internal;
 
 /**
  * Utility class that provide methods that checks several conditions.
- * 
+ *
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
  * Date: 7/17/12
  * Time: 8:49 PM
