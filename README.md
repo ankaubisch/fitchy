@@ -11,20 +11,20 @@ This library is built with [maven](http://maven.apache.org/) and is available un
 
 Basic Usage
 -----------
-1. Create a property file filled with features. You can define your own notation of feature names.
+Create a property file filled with features. You can define your own notation of feature names.
 
     test.feature.1=on
     test.feature.2=off
 
-2. Create a FeatureContext from property file
+Create a FeatureContext from property file
 
     FeatureContext context = Fitchy.loadFromResource("/features.properties");
 
-3. Proxying your target object (please don't forget that this object needs to implement an interface
+Proxying your target object (please don't forget that this object needs to implement an interface
 
     ImplementedInterface proxy = Fitchy.observe(targetObject, context);
 
-4. Add the FeatureSwitch annotation to your target class that implements ImplementedInterface
+Add the FeatureSwitch annotation to your target class that implements ImplementedInterface
 
     public class TargetClass implements ImplementedInterface {
       @FeatureSwitch("test.feature.1")
@@ -34,4 +34,4 @@ Basic Usage
       }
     }
 
-5. Now you are ready to use this toggles. In this example the implemented method will return `something`. You can edit this annotation and use `test.feature.2` and you will see that something isn't returned. It will return null instead.
+Now you are ready to use this toggles. In this example the implemented method will return `something`. You can edit this annotation and use `test.feature.2` and you will see that something isn't returned. It will return null instead.
