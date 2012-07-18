@@ -30,7 +30,7 @@ Add the FeatureSwitch annotation to your target class that implements Implemente
       @FeatureSwitch("test.feature.1")
       @Override
       public Object method() {
-        return seomething;
+        return something;
       }
     }
 
