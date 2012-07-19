@@ -27,6 +27,8 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.kaubisch.fitchy.internal.Preconditions.*;
 
@@ -49,6 +51,17 @@ import static de.kaubisch.fitchy.internal.Preconditions.*;
  * Time: 1:06 PM
  */
 public class CglibObserver implements FeatureObserver {
+
+    private static final Map<Class<?>, Object> defaultValueMap;
+
+    static {
+        defaultValueMap = new HashMap<Class<?>, Object>();
+        defaultValueMap.put(Integer.TYPE, -1);
+        defaultValueMap.put(Long.TYPE, -1);
+        defaultValueMap.put(Double.TYPE, -1);
+        defaultValueMap.put(Float.TYPE, -1);
+        defaultValueMap.put(Byte.TYPE, -1);
+    }
 
     /**
      * Implementation of {@link MethodInterceptor} that is needed when you want to create
@@ -123,15 +136,21 @@ public class CglibObserver implements FeatureObserver {
         Constructor[] constructors = toObserve.getClass().getConstructors();
         for(Constructor c : constructors) {
             Class<?>[] argumentClasses = c.getParameterTypes();
-            if(hasPrimitives(argumentClasses)) {
-                continue;
-            }
-            Object[] values = new Object[argumentClasses.length];
+            Object[] values = getConstructorValues(argumentClasses);
             proxiedObject = (T)e.create(argumentClasses, values);
             break;
         }
 
         return proxiedObject;
+    }
+
+    private Object[] getConstructorValues(Class<?>[] classes) {
+        Object[] values = new Object[classes.length];
+        for(int i = 0; i < classes.length; i++) {
+            values[i] = defaultValueMap.get(classes[i]);
+        }
+
+        return values;
     }
 
     /**

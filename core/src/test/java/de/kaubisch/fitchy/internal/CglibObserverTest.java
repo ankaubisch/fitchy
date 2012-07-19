@@ -74,7 +74,7 @@ public class CglibObserverTest {
     @Test
     public void observe_WithNativeConstructorObject_ReturnsNull() {
         CglibProxiedNativeConstructorClass test = observer.observe(new CglibProxiedNativeConstructorClass(1), context);
-        assertThat(test, is(nullValue()));
+        assertThat(Enhancer.isEnhanced(test.getClass()), is(equalTo(true)));
     }
 }
 
