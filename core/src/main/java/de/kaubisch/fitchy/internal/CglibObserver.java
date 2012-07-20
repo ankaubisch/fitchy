@@ -144,6 +144,15 @@ public class CglibObserver implements FeatureObserver {
         return proxiedObject;
     }
 
+    /**
+     * Create an array of objects that can be used to instantiate an object
+     * with a {@link Constructor} object. It lookup default values in an internal
+     * map (especially for native classes). If no default value is found it fill this
+     * argument with null
+     *
+     * @param classes all argument classes of a constructor
+     * @return an array of possible argument values for a constructor
+     */
     private Object[] getConstructorValues(Class<?>[] classes) {
         Object[] values = new Object[classes.length];
         for(int i = 0; i < classes.length; i++) {
@@ -151,22 +160,5 @@ public class CglibObserver implements FeatureObserver {
         }
 
         return values;
-    }
-
-    /**
-     * Iterate through array of classes an check if one of this classes
-     * is a primitive one.
-     *
-     * @param classes classes of method arguments
-     * @return return true if a primitive class is found
-     */
-    private boolean hasPrimitives(Class<?>[] classes) {
-        for(Class<?> cls : classes) {
-            if(cls.isPrimitive()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
