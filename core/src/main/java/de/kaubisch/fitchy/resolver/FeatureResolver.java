@@ -18,11 +18,10 @@
  */
 package de.kaubisch.fitchy.resolver;
 
+import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.FeatureStatus;
-import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.FitchyConfig;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.FeatureContext;
 
 /**
  * {@link FeatureResolver} needs a {@link de.kaubisch.fitchy.FeatureContext} and a
@@ -37,8 +36,11 @@ public class FeatureResolver {
 
     private FeatureContext storage;
 
-    public FeatureResolver(FeatureContext context) {
+    private FitchyConfig config;
+
+    public FeatureResolver(FeatureContext context, FitchyConfig config) {
         this.storage = context;
+        this.config = config;
     }
 
     /**
@@ -52,12 +54,11 @@ public class FeatureResolver {
     public boolean isFeatureAvailable(FeatureSwitch annotation) {
         boolean found = false;
         if(annotation != null) {
-            FitchyConfig options = Fitchy.getConfig();
             String statusValue = annotation.status();
             if("".equals(statusValue)) {
-                statusValue = options.enabled.getSystemName();
+                statusValue = config.enabled.getSystemName();
             }
-            FeatureStatus status = options.statusOf(statusValue);
+            FeatureStatus status = config.statusOf(statusValue);
             found = storage.featureHasStatus(annotation.value(), status);
         }
         return found;

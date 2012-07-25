@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.resolver;
+package de.kaubisch.fitchy.exception;
 
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>

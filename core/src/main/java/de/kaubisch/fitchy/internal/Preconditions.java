@@ -42,7 +42,17 @@ public class Preconditions {
      * @throws IllegalArgumentException exception will be thrown if object is null
      */
     public static void throwIllegalArgumentExceptionIfNull(Object obj, String message) {
-        if(obj == null) {
+        throwIllegalArgumentExceptionIfFalse(obj != null, message);
+    }
+
+    /**
+     * Checks whether condition is false and throw an {@link IllegalArgumentException}.
+     *
+     * @param conditionPass indicates whether a condition is occurred
+     * @param message the message a thrown {@link IllegalArgumentException}
+     */
+    public static void throwIllegalArgumentExceptionIfFalse(boolean conditionPass, String message) {
+        if(!conditionPass) {
             throw new IllegalArgumentException(message);
         }
     }

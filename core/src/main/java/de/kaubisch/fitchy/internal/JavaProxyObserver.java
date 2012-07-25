@@ -70,9 +70,7 @@ public class JavaProxyObserver implements FeatureObserver {
     public <T> T observe(Object obj, FeatureContext context) {
         throwIllegalArgumentExceptionIfNull(context, "FeatureContext instance is required.");
         throwIllegalArgumentExceptionIfNull(obj, "observable object is required.");
-        if(obj.getClass().getInterfaces().length == 0) {
-            throw new IllegalArgumentException("observable object must implement an interface.");
-        }
+        throwIllegalArgumentExceptionIfFalse(obj.getClass().getInterfaces().length != 0, "observable object must implement an interface.");
         return (T) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj, context));
     }
 }

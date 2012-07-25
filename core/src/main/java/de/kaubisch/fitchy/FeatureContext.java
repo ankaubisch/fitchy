@@ -32,7 +32,7 @@ import java.util.Map;
 public class FeatureContext {
 
 	private Map<String, Feature> featureMap;
-	private FitchyConfig options;
+	private FitchyConfig config;
 
     /**
      * Initializes a new {@link FeatureContext} with given {@link FitchyConfig}
@@ -41,7 +41,7 @@ public class FeatureContext {
      */
 	public FeatureContext(FitchyConfig config) {
 		featureMap = new HashMap<String, Feature>();
-		this.options = config;
+		this.config = config;
 	}
 
     /**
@@ -64,7 +64,7 @@ public class FeatureContext {
             throw new FeatureAlreadyExistsException("feature with name " + key +" already exists.");
         }
 
-		Feature feature = new Feature(key, options.enabled);
+		Feature feature = new Feature(key, config.enabled);
         featureMap.put(key, feature);
         return feature;
 	}
@@ -142,5 +142,14 @@ public class FeatureContext {
      */
     public int size() {
         return featureMap.size();
+    }
+
+    /**
+     * Returns the config the context is constructed from.
+     *
+     * @return current {@link FitchyConfig} from context
+     */
+    public FitchyConfig getConfig() {
+        return config;
     }
 }

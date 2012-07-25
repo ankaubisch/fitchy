@@ -18,6 +18,7 @@
  */
 package de.kaubisch.fitchy.resolver;
 
+import de.kaubisch.fitchy.exception.AnnotationNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 

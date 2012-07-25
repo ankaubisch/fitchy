@@ -18,9 +18,8 @@
  */
 package de.kaubisch.fitchy.internal;
 
-import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.resolver.AnnotationNotFoundException;
+import de.kaubisch.fitchy.exception.AnnotationNotFoundException;
 import de.kaubisch.fitchy.resolver.AnnotationRetriever;
 import de.kaubisch.fitchy.resolver.FeatureResolver;
 import de.kaubisch.fitchy.resolver.FeatureResolverFactory;

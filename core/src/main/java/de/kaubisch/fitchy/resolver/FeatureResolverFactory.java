@@ -19,6 +19,7 @@
 package de.kaubisch.fitchy.resolver;
 
 import de.kaubisch.fitchy.FeatureContext;
+import de.kaubisch.fitchy.FitchyConfig;
 
 /**
  * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
@@ -28,12 +29,18 @@ import de.kaubisch.fitchy.FeatureContext;
 public class FeatureResolverFactory {
 
     private FeatureContext context;
+    private FitchyConfig config;
+
+    public FeatureResolverFactory(FeatureContext context, FitchyConfig config) {
+        this.context = context;
+        this.config = config;
+    }
 
     public FeatureResolverFactory(FeatureContext context) {
-        this.context = context;
+        this(context, context.getConfig());
     }
 
     public FeatureResolver createResolver() {
-        return new FeatureResolver(context);
+        return new FeatureResolver(context, config);
     }
 }

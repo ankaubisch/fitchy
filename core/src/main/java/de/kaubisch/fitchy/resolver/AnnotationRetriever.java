@@ -18,6 +18,8 @@
  */
 package de.kaubisch.fitchy.resolver;
 
+import de.kaubisch.fitchy.exception.AnnotationNotFoundException;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
