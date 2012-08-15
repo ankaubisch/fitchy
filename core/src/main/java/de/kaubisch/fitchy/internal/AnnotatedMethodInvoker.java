@@ -40,8 +40,34 @@ import java.lang.reflect.Method;
  */
 public class AnnotatedMethodInvoker {
 
-    private Object origin;
     private FeatureResolverFactory resolverFactory;
+    private MethodInvoke invoke;
+
+    /**
+     * With an implementation of this Interface the AnnotatedMethodInvoker
+     * can be customized how the method will be called.
+     * 
+     * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
+     */
+    public interface MethodInvoke {
+    	
+    	/**
+    	 * Invokes the method of an Object with arguments. 
+    	 * 
+    	 * @param method the {@link Method} that should be called
+    	 * @param args all arguments which are needed to call this method
+    	 * @return a return value of this method that was called
+    	 * @throws Throwable all exceptions that this method can throw
+    	 */
+        Object invoke(Method method, Object[] args) throws Throwable;
+        
+        /**
+         * Returns the {@link Class} of that object, that will be called with
+         * the function {@link MethodInvoke#invoke(Method, Object[])}
+         * @return the {@link Class} of original instance
+         */
+        Class<?> getTargetClass();
+    }
 
     /**
      * Initialize class with orginal object and a {@link FeatureResolverFactory}
@@ -51,9 +77,28 @@ public class AnnotatedMethodInvoker {
      * @param origin original object
      * @param resolverFactory a {@link FeatureResolverFactory} that can create a new instance of {@link FeatureResolver}
      */
-    public AnnotatedMethodInvoker(Object origin, FeatureResolverFactory resolverFactory) {
-        this.origin = origin;
+    public AnnotatedMethodInvoker(final Object origin, FeatureResolverFactory resolverFactory) {
         this.resolverFactory = resolverFactory;
+        invoke = new MethodInvoke() {
+            public Object invoke(Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
+            	boolean accessible = method.isAccessible();
+            	try{
+            		method.setAccessible(true);
+            		return method.invoke(origin, args);
+            	} finally {
+            		method.setAccessible(accessible);
+            	}
+            }
+
+            public Class<?> getTargetClass() {
+                return origin.getClass();
+            }
+        };
+    }
+
+    public AnnotatedMethodInvoker(MethodInvoke invoke, FeatureResolverFactory resolverFactory) {
+        this.resolverFactory = resolverFactory;
+        this.invoke = invoke;
     }
 
     /**
@@ -67,21 +112,19 @@ public class AnnotatedMethodInvoker {
      * @throws Exception rethrow exceptions that a method call can throw
      */
     public Object invoke(Method method, Object[] arguments) {
-        AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, origin.getClass());
+        AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, invoke.getTargetClass());
         Object result = null;
         try {
             try {
                 FeatureSwitch featureSwitch = retriever.getAnnotation(method);
                 FeatureResolver resolver =  resolverFactory.createResolver();
                 if(resolver.isFeatureAvailable(featureSwitch)) {
-                    result = method.invoke(origin, arguments);
+                    result = invoke.invoke(method, arguments);
                 }
             } catch (AnnotationNotFoundException e) {
-                result = method.invoke(origin, arguments);
+                result = invoke.invoke(method, arguments);
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
+        } catch (Throwable e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 

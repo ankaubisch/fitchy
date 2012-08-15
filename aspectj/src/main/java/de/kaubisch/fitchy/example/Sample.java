@@ -16,34 +16,18 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy;
+package de.kaubisch.fitchy.example;
 
 /**
- * A Feature representation that contains a name
- * and a {@link FeatureStatus}.
+ * User: Andreas Kaubisch <andreas.kaubisch@gmail.com>
+ * Date: 8/6/12
+ * Time: 8:32 PM
  */
-public class Feature {
-	private String name;
-	private FeatureStatus status;
-	
-	public Feature(String name, FeatureStatus status) {
-		this.name   = name;
-		this.status = status;
-	}
+public class Sample {
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public FeatureStatus getStatus() {
-        return status;
-    }
+    public static void main(String[] args) {
 
-    public void setStatus(FeatureStatus status) {
-        this.status = status;
     }
 }

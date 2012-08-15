@@ -46,8 +46,8 @@ public class FeatureContextTest {
     @Test
     public void addFeature_WithString_FeatureAddedWithEnabledStatus() throws Exception {
         Feature feature = context.addFeature("test.feature");
-        assertThat(feature.name, Is.is("test.feature"));
-        assertThat(feature.status, Is.is(options.enabled));
+        assertThat(feature.getName(), Is.is("test.feature"));
+        assertThat(feature.getStatus(), Is.is(options.enabled));
     }
 
     @Test(expected=IllegalArgumentException.class)

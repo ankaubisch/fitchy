@@ -1,6 +1,8 @@
 package de.kaubisch.fitchy.sample;
 
+import de.kaubisch.fitchy.ContextBuilder;
 import de.kaubisch.fitchy.Fitchy;
+import de.kaubisch.fitchy.FitchyConfig;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.FeatureContext;
 
@@ -19,6 +21,10 @@ public class HelloWorldApp
 	
 	private class HelloWorldSample implements HelloWorld {
 		
+		public HelloWorldSample() {
+			super();
+		}
+
 		@FeatureSwitch("simple_test")
 		public void sayHello() {
 			System.out.println("Hello World!");
@@ -33,7 +39,7 @@ public class HelloWorldApp
 	
 	
 	public HelloWorldApp() {
-		FeatureContext context = Fitchy.loadStoreFromResource("/sample_features.properties");
+		FeatureContext context = new ContextBuilder(FitchyConfig.getDefault()).createFromUrl(HelloWorldApp.class.getResource("/sample_features.properties"));
 		sample = Fitchy.observe(new HelloWorldSample(), context);
 	}
 	

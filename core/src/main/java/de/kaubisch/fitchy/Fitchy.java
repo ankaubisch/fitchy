@@ -18,10 +18,6 @@
  */
 package de.kaubisch.fitchy;
 
-import java.io.*;
-import java.lang.reflect.Constructor;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -47,89 +43,7 @@ public final class Fitchy {
 	 */
 	private Fitchy() {
 	}
-	
-	/**
-	 * Loads a resource from classpath with ClassLoader of this class.
-	 * Always returns an instance of {@link FeatureContext} wether it can read
-	 * the resource or not.
-	 * 
-	 * @param resourceName name of the resource in classpath
-	 * @return an instance of {@link FeatureContext}
-	 */
-	public static FeatureContext loadStoreFromResource(String resourceName) {
-		return loadStoreFromUrl(Fitchy.class.getResource(resourceName));
-	}
-	
-	/**
-	 * Loads a resource with feature configuration from an {@link URL} and stores all
-	 * of this in a new {@link FeatureContext} and returns it.
-	 *  
-	 * @param url an {@link URL} to a resource with feature configuration
-	 * 
-	 * @return a new {@link FeatureContext} with loaded {@link Feature} items
-	 */
-	public static FeatureContext loadStoreFromUrl(URL url) {
-		FeatureContext context = new FeatureContext(Fitchy.getConfig());
-		addFeaturesFromUrl(url, context);
-		return context;
-	}
-	
-	/**
-	 * Add all features from url resource to existing {@link FeatureContext}.
-	 * This overrides existing {@link Feature} added to storage.
-	 * 
-	 * @param url an {@link URL} to a resource that contains features
-	 * @param context a {@link FeatureContext} that holds all features
-	 */
-	public static void addFeaturesFromUrl(URL url, FeatureContext context) {
-		if(url != null) {
-			try {
-				File file = new File(url.toURI());
-				if(file.exists() && file.canRead()) {
-					fillStoreWithFeatures(context, file);
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-		}		
-	}
-	
-	/**
-	 * Retrieves current options and the {@link FeatureReader} class that is set to this options.
-	 * Create an instance of this {@link FeatureReader} and loads all Features from File and put them
-	 * into {@link FeatureContext}.
-	 * 
-	 * @param context an instance of {@link FeatureContext}
-	 * @param file {@link File} full of features
-	 * @throws FileNotFoundException is thrown if {@link File} is not found
-	 */
-	private static void fillStoreWithFeatures(FeatureContext context, File file)
-			throws FileNotFoundException {
-		FitchyConfig option = Fitchy.getConfig();
-		FeatureReader reader = null;
-		try {
-			Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, FitchyConfig.class);
-			reader = constructor.newInstance(new FileInputStream(file), option);
-			
-			Feature feature = null;
-			while((feature = reader.read()) != null) {
-				context.addFeature(feature);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
+		
 	/**
 	 * Returns a singleton of {@link FitchyConfig}
 	 * 

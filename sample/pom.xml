@@ -4,11 +4,11 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>de.kaubisch</groupId>
-		<artifactId>fitchy</artifactId>
-		<version>0.2-SNAPSHOT</version>
-	</parent>
-	<groupId>de.kaubisch.fitchy</groupId>
+        <groupId>de.kaubisch</groupId>
+        <artifactId>fitchy</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+    <groupId>de.kaubisch.fitchy</groupId>
 	<artifactId>sample</artifactId>
 	<name>fitchy-sample</name>
 	<properties>
@@ -20,11 +20,87 @@
 			<artifactId>core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>de.kaubisch.fitchy</groupId>
+            <artifactId>aspectj</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.0</version>
+        </dependency>
 	</dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>bin</descriptorRef>
+                        <descriptorRef>src</descriptorRef>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <finalName></finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-javadoc</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>aspectj</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>aspectj-maven-plugin</artifactId>
+                        <version>1.4</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <privateScope>true</privateScope>
+                            <showWeaveInfo>true</showWeaveInfo>
+                            <source>1.6</source>
+                            <target>1.6</target>
+                            <aspectLibraries>
+                                <aspectLibrary>
+                                    <groupId>de.kaubisch.fitchy</groupId>
+                                    <artifactId>aspectj</artifactId>
+                                </aspectLibrary>
+                            </aspectLibraries>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

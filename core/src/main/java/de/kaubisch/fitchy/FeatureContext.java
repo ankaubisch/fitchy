@@ -83,11 +83,11 @@ public class FeatureContext {
         if(feature == null) {
             throw new IllegalArgumentException("feature argument must be an instance");
         }
-        if(hasFeature(feature.name)) {
-            throw new FeatureAlreadyExistsException("feature with name " + feature.name + " already exists.");
+        if(hasFeature(feature.getName())) {
+            throw new FeatureAlreadyExistsException("feature with name " + feature.getName() + " already exists.");
         }
 
-		featureMap.put(feature.name, feature);
+		featureMap.put(feature.getName(), feature);
 
         return feature;
 	}
@@ -121,7 +121,7 @@ public class FeatureContext {
         }
 
         if(hasFeature(key)) {
-			return featureMap.get(key).status == status;
+			return featureMap.get(key).getStatus() == status;
 		}
 		
 		return false;

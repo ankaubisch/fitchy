@@ -134,6 +134,7 @@ public class CglibObserver implements FeatureObserver {
     private <T> T createProxyWithFirstUsableConstructor(Enhancer e, Object toObserve) {
         T proxiedObject = null;
         Constructor[] constructors = toObserve.getClass().getConstructors();
+        
         for(Constructor c : constructors) {
             Class<?>[] argumentClasses = c.getParameterTypes();
             Object[] values = getConstructorValues(argumentClasses);
