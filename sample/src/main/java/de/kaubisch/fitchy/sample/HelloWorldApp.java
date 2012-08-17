@@ -1,10 +1,9 @@
 package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.ContextBuilder;
-import de.kaubisch.fitchy.Fitchy;
-import de.kaubisch.fitchy.FitchyConfig;
-import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.FeatureContext;
+import de.kaubisch.fitchy.Fitchy;
+import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 /**
  * Hello world!
@@ -39,7 +38,9 @@ public class HelloWorldApp
 	
 	
 	public HelloWorldApp() {
-		FeatureContext context = new ContextBuilder(FitchyConfig.getDefault()).createFromUrl(HelloWorldApp.class.getResource("/sample_features.properties"));
+		FeatureContext context = ContextBuilder
+										.fromUrl(HelloWorldApp.class.getResource("/sample_features.properties"))
+										.build();
 		sample = Fitchy.observe(new HelloWorldSample(), context);
 	}
 	

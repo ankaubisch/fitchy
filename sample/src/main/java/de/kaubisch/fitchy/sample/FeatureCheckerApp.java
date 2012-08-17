@@ -1,13 +1,17 @@
 package de.kaubisch.fitchy.sample;
 
-import de.kaubisch.fitchy.*;
+import de.kaubisch.fitchy.ContextBuilder;
+import de.kaubisch.fitchy.FeatureChecker;
+import de.kaubisch.fitchy.FeatureContext;
 
 public class FeatureCheckerApp {
 
 	private FeatureContext context;
 	
 	public FeatureCheckerApp() {
-		context = new ContextBuilder(FitchyConfig.getDefault()).createFromUrl(this.getClass().getResource("/sample_features.properties"));
+		context = ContextBuilder
+					.fromUrl(this.getClass().getResource("/sample_features.properties"))
+					.build();
 	}
 	
 	public void execute() {

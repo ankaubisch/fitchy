@@ -1,10 +1,10 @@
 package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.ContextBuilder;
+import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.FitchyConfig;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
-import de.kaubisch.fitchy.FeatureContext;
 
 public class CustomOptionsApp {
 	public static interface DummyInterface {
@@ -30,7 +30,10 @@ public class CustomOptionsApp {
 		FitchyConfig options = FitchyConfig.getFromPropertiesStream(CustomOptionsApp.class.getResourceAsStream("/custom-fitchy-configuration.properties"));
         Fitchy.setConfig(options);
 
-		FeatureContext context = new ContextBuilder(options).createFromUrl(CustomOptionsApp.class.getResource("/sample_features_de.properties"));
+		FeatureContext context = ContextBuilder
+									.fromUrl(CustomOptionsApp.class.getResource("/sample_features_de.properties"))
+									.withConfig(options)
+									.build();
 		
 		sample = Fitchy.observe(new DummyImplementation(), context);
 	}

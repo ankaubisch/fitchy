@@ -20,6 +20,7 @@ package de.kaubisch.fitchy.internal;
 
 import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.FeatureObserver;
+import de.kaubisch.fitchy.exception.CannotCreateProxyException;
 import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -98,6 +99,10 @@ public class CglibObserver implements FeatureObserver {
             proxiedObject = (T)e.create();
         } else {
             proxiedObject = createProxyWithFirstUsableConstructor(e, toObserve);
+        }
+        
+        if(proxiedObject == null) {
+        	throw new CannotCreateProxyException("CglibObserver did not found a constructor to enhance target class");
         }
         return proxiedObject;
     }

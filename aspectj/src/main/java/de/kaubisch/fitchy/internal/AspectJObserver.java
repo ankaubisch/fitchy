@@ -29,12 +29,10 @@ public class AspectJObserver {
         FeatureContext context = AspectJFeatureContext.getInstance();
         FeatureResolverFactory resolverFactory = new FeatureResolverFactory(context);
         AnnotatedMethodInvoker.MethodInvoke invoke = new AnnotatedMethodInvoker.MethodInvoke() {
-            @Override
-            public Object invoke(Method method, Object[] args) throws Throwable  {
+        	public Object invoke(Method method, Object[] args) throws Throwable  {
                 return pjp.proceed();
             }
-
-            @Override
+            
             public Class<?> getTargetClass() {
                 return pjp.getTarget().getClass();
             }

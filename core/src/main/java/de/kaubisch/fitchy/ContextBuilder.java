@@ -33,9 +33,84 @@ public class ContextBuilder {
 
 	private FitchyConfig configuration;
 	
-	public ContextBuilder(FitchyConfig configuration) {
+	private URL url;
+	private InputStream is;
+
+	
+	private ContextBuilder(FitchyConfig configuration) {
 		this.configuration = configuration;
 	}
+	
+	private ContextBuilder() {
+		this(FitchyConfig.getDefault());
+	}
+	
+	/**
+	 * Setup a {@link ContextBuilder} with an URL that point to a feature resource
+	 * file. It sets the default {@link FitchyConfig};
+	 * 
+	 * @param url an {@link URL} to a resource with feature configuration
+	 * 
+	 * @return a new {@link ContextBuilder} that is configured to read from an {@link URL}
+	 * @throws IllegalArgumentException if given url is null
+	 */
+	public static ContextBuilder fromUrl(URL url) {
+		Preconditions.throwIllegalArgumentExceptionIfNull(url, "URL argument is required to create ContextBuilder");
+		ContextBuilder builder = create();
+		builder.url = url;
+		
+		return builder;
+	}
+	
+	public static ContextBuilder fromStream(InputStream is) {
+		Preconditions.throwIllegalArgumentExceptionIfNull(is, "InputStream argument is required to create ContextBuilder");
+		ContextBuilder builder = create();
+		builder.is = is;
+		
+		return builder;
+	}
+
+	
+	/**
+	 * Setup a {@link ContextBuilder} without an {@link URL} or an {@link InputStream}.
+	 * It sets the {@link FitchyConfig} to default. This function is used when you want
+	 * to create an empty {@link FeatureContext}.
+	 * 
+	 * @return a new {@link ContextBuilder} without an {@link URL} and {@link InputStream}
+	 */
+	public static ContextBuilder create() {
+		ContextBuilder builder = new ContextBuilder();
+		return builder;
+	}
+
+	/**
+	 * Setup an alternative {@link FitchyConfig} for current {@link ContextBuilder} instance. This {@link FitchyConfig}
+	 * is used to instanciate the {@link FeatureContext} later.
+	 *  
+	 * @param config alternative {@link FitchyConfig}
+	 * @return current {@link ContextBuilder} instance
+	 */
+	public ContextBuilder withConfig(FitchyConfig config) {
+		Preconditions.throwIllegalArgumentExceptionIfNull(config, "FitchyConfig is required");
+		this.configuration = config;
+		
+		return this;
+	}
+	
+	public FeatureContext build() {
+		FeatureContext context = null;
+		if(url != null) {
+			context = createFromUrl(url);
+		} else if (is != null) {
+			context = createFromStream(is);
+		} else {
+			context = createEmpty();
+		}
+		
+		return context;
+	}
+
+
 	
 	/**
 	 * Loads a resource with feature configuration from an {@link URL} and stores all
@@ -46,7 +121,7 @@ public class ContextBuilder {
 	 * @return a new {@link FeatureContext} with loaded {@link Feature} items
 	 * @throws IllegalArgumentException if given url is null
 	 */
-	public FeatureContext createFromUrl(URL urlToFeatures) {
+	private FeatureContext createFromUrl(URL urlToFeatures) {
 		Preconditions.throwIllegalArgumentExceptionIfNull(urlToFeatures, "URL argument is required to create context");
 		FeatureContext newContext = createEmpty();
 		addFeaturesFromUrl(urlToFeatures, newContext);
@@ -62,7 +137,7 @@ public class ContextBuilder {
 	 * @return a new {@link FeatureContext} with loaded {@link Feature} items
 	 * @throws an {@link IllegalArgumentException} if given InputStream is null
 	 */
-	public FeatureContext createFromStream(InputStream is) {
+	private FeatureContext createFromStream(InputStream is) {
 		Preconditions.throwIllegalArgumentExceptionIfNull(is, "InputStream argument is required to create context");
 		FeatureContext newContext = createEmpty();
 		fillStoreWithFeatures(newContext, is);
@@ -135,4 +210,5 @@ public class ContextBuilder {
 			}
 		}
 	}
+
 }

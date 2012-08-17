@@ -38,33 +38,4 @@
             <version>${parent.version}</version>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>aspectj</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>aspectj-maven-plugin</artifactId>
-                        <version>1.4</version>
-                        <configuration>
-                            <verbose>true</verbose>
-                            <privateScope>true</privateScope>
-                            <showWeaveInfo>true</showWeaveInfo>
-                            <complianceLevel>1.6</complianceLevel>
-                            <source>1.6</source>
-                            <target>1.6</target>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

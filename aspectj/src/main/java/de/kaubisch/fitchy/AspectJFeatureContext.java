@@ -35,16 +35,20 @@ public class AspectJFeatureContext {
 
     public static FeatureContext initializeFor(FitchyConfig config, URL features) {
         synchronized(SEMAPHORE) {
-            ContextBuilder builder = new ContextBuilder(config);
-            context = builder.createFromUrl(features);
+            context = ContextBuilder
+						.fromUrl(features)
+						.withConfig(config)
+						.build();
         }
         return context;
     }
 
     public static FeatureContext initializeFor(FitchyConfig config, InputStream is) {
         synchronized (SEMAPHORE) {
-            ContextBuilder builder = new ContextBuilder(config);
-            context = builder.createFromStream(is);
+            context = ContextBuilder
+            			.fromStream(is)
+            			.withConfig(config)
+            			.build();
         }
         return context;
     }
