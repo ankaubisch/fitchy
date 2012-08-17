@@ -47,7 +47,7 @@ public class FeatureContextTest {
     public void addFeature_WithString_FeatureAddedWithEnabledStatus() throws Exception {
         Feature feature = context.addFeature("test.feature");
         assertThat(feature.getName(), Is.is("test.feature"));
-        assertThat(feature.getStatus(), Is.is(options.enabled));
+        assertThat(feature.getStatus(), Is.is(options.enabledStatus));
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -68,7 +68,7 @@ public class FeatureContextTest {
 
     @Test
     public void addFeature_WithFeature_FeatureAdded() {
-        Feature feature = new Feature("test.feature", options.enabled);
+        Feature feature = new Feature("test.feature", options.enabledStatus);
         assertSame(feature, context.addFeature(feature));
     }
 
@@ -79,7 +79,7 @@ public class FeatureContextTest {
 
     @Test(expected=FeatureAlreadyExistsException.class)
     public void addFeature_WithAlreadyAddedFeature_ThrowsException() {
-        Feature feature = new Feature("test.feature", options.enabled);
+        Feature feature = new Feature("test.feature", options.enabledStatus);
         context.addFeature(feature);
         context.addFeature(feature);
     }
@@ -102,20 +102,20 @@ public class FeatureContextTest {
 
     @Test
     public void featureHasStatus_WithAddedFeature_ReturnsTrue() {
-        addFeatureToContext("test.feature", options.enabled);
-        assertTrue("feature 'test.feature' should have status enabled", context.featureHasStatus("test.feature", options.enabled));
+        addFeatureToContext("test.feature", options.enabledStatus);
+        assertTrue("feature 'test.feature' should have status enabledStatus", context.featureHasStatus("test.feature", options.enabledStatus));
     }
 
     @Test
     public void featureHasStatus_WithAddedFeature_ReturnsFalse() {
-        addFeatureToContext("test.feature", options.enabled);
-        assertFalse("feature 'test.feature' should have status enabled", context.featureHasStatus("test.feature", options.disabled));
+        addFeatureToContext("test.feature", options.enabledStatus);
+        assertFalse("feature 'test.feature' should have status enabledStatus", context.featureHasStatus("test.feature", options.disabledStatus));
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void featureHasStatus_WithoutFeatureKey_ThrowsException() {
-        addFeatureToContext("test.feature", options.enabled);
-        context.featureHasStatus(null, options.enabled);
+        addFeatureToContext("test.feature", options.enabledStatus);
+        context.featureHasStatus(null, options.enabledStatus);
     }
 
     @Test

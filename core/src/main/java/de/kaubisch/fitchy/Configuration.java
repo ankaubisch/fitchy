@@ -30,8 +30,8 @@ import java.util.Properties;
 public class Configuration {
 	public List<Enum<? extends FeatureStatus>> statusList;
 	
-	public FeatureStatus enabled;
-	public FeatureStatus disabled;
+	public FeatureStatus enabledStatus;
+	public FeatureStatus disabledStatus;
 	
 	public Class<? extends FeatureReader> readerClass;
 
@@ -48,9 +48,9 @@ public class Configuration {
 				option.statusList.add(e);
                 FeatureStatus featureStatus = (FeatureStatus) e;
 				if(featureStatus.isEnabledStatus()) {
-					option.enabled = featureStatus;
+					option.enabledStatus = featureStatus;
 				} else if(featureStatus.isDisabledStatus()) {
-					option.disabled= featureStatus;
+					option.disabledStatus= featureStatus;
 				}
 			}
 		}

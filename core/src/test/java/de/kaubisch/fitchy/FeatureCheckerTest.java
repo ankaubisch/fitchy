@@ -46,12 +46,12 @@ public class FeatureCheckerTest {
         checker = new FeatureChecker<String>(context, "test.feature") {
             @Override
             public String onFeatureEnabled() {
-                return "enabled";
+                return "enabledStatus";
             }
 
             @Override
             public String onFeatureDisabled() {
-                return "disabled";
+                return "disabledStatus";
             }
         };
     }
@@ -60,12 +60,12 @@ public class FeatureCheckerTest {
     public void run_WithFeature_ReturnEnabled(){
         when(context.hasFeature("test.feature")).thenReturn(true);
 
-        assertEquals("checker should return 'enabled' string", "enabled", checker.run());
+        assertEquals("checker should return 'enabledStatus' string", "enabledStatus", checker.run());
     }
 
     @Test
     public void run_WithoutFeature_ReturnDisabled() {
         when(context.hasFeature("test.feature")).thenReturn(false);
-        assertEquals("checker should return 'disabled' string", "disabled", checker.run());
+        assertEquals("checker should return 'disabledStatus' string", "disabledStatus", checker.run());
     }
 }

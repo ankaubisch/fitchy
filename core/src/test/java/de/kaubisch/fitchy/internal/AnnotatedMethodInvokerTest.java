@@ -66,7 +66,7 @@ public class AnnotatedMethodInvokerTest {
     public void invoke_WithDisabledFeature_ReturnsNullValue() throws Throwable {
         Method sayHelloWithAnnotation = getMethod("sayHelloWithAnnotation");
         when(resolver.isFeatureAvailable((FeatureSwitch)any())).thenReturn(false);
-        assertNull("result should be null because feature is disabled", invoker.invoke(sayHelloWithAnnotation, new Object[] {}));
+        assertNull("result should be null because feature is disabledStatus", invoker.invoke(sayHelloWithAnnotation, new Object[] {}));
     }
 
     @Test

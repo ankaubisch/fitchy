@@ -1,8 +1,8 @@
 package de.kaubisch.fitchy.sample;
 
-import de.kaubisch.fitchy.FeatureContext;
-import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.Configuration;
+import de.kaubisch.fitchy.FeatureContext;
+import de.kaubisch.fitchy.ProxyBuilder;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 public class CustomOptionsApp {
@@ -33,7 +33,7 @@ public class CustomOptionsApp {
 									.withConfig(options)
 									.build();
 		
-		sample = Fitchy.observe(new DummyImplementation(), context);
+		sample = ProxyBuilder.fromContext(context).build(new DummyImplementation());
 	}
 	
 	public void callSample() {

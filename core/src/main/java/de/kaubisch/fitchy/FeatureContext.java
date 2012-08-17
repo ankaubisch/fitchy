@@ -245,7 +245,7 @@ public class FeatureContext {
      * represents the name of the new feature.
      * If the required attribute 'key' is null or empty an IllegalArgumentException is thrown.
      * When function added Feature to this context it returns this newly added object so you can
-     * work with it. This instance has the {@link FeatureStatus} enabled.
+     * work with it. This instance has the {@link FeatureStatus} enabledStatus.
      *
      * @param key name of {@link Feature}
      * @return a new {@link Feature} implementation that was added to context
@@ -259,14 +259,14 @@ public class FeatureContext {
             throw new FeatureAlreadyExistsException("feature with name " + key +" already exists.");
         }
 
-		Feature feature = new Feature(key, config.enabled);
+		Feature feature = new Feature(key, config.enabledStatus);
         featureMap.put(key, feature);
         return feature;
 	}
 
     /**
      * This function has the same functionality like {@link FeatureContext#addFeature(String)}
-     * but instead set the {@link FeatureStatus} of the new feature is enabled it
+     * but instead set the {@link FeatureStatus} of the new feature is enabledStatus it
      * takes the status of the passed object.
      * If the required attribute 'feature' is null the function throws an {@link IllegalArgumentException}.
      *

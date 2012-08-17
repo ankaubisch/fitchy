@@ -50,16 +50,16 @@ public class FeatureContextBuilderTest {
 	@Test
 	public void build_withEmptyBuilderAndCustomConfig_returnsNewEmptyContextWithCustomConfig() {
 		Configuration config = Configuration.getDefault();
-		config.enabled = null;
+		config.enabledStatus = null;
 		FeatureContext context = Builder.create().withConfig(config).build();
-		assertThat(context.getConfig().enabled, Is.is((FeatureStatus) null));
+		assertThat(context.getConfig().enabledStatus, Is.is((FeatureStatus) null));
 	}
 	
 	@Test
 	public void build_withUrlBuilder_returnsNewContextWithUrlFeatures() {
 		URL urlToFeatures = this.getClass().getResource("/test_features.properties");
 		FeatureContext context = Builder.fromUrl(urlToFeatures).build();
-		assertThatFeatureIsInContext(context, "feature_test", Configuration.getDefault().enabled);
+		assertThatFeatureIsInContext(context, "feature_test", Configuration.getDefault().enabledStatus);
 	}
 
 	
@@ -67,7 +67,7 @@ public class FeatureContextBuilderTest {
 	public void build_withStreamBuilder_returnsNewContextWithStreamFeatures() {
 		InputStream is = this.getClass().getResourceAsStream("/test_features.properties");
 		FeatureContext context = Builder.fromStream(is).build();
-		assertThatFeatureIsInContext(context, "feature_test", Configuration.getDefault().enabled);
+		assertThatFeatureIsInContext(context, "feature_test", Configuration.getDefault().enabledStatus);
 	}
 
 	@Test

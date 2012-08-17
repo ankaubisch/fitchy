@@ -20,26 +20,26 @@ package de.kaubisch.fitchy;
 
 /**
  * Abstract class that provides a possibility to check whether
- * a feature is enabled or disabled. When you want to check inline
+ * a feature is enabledStatus or disabledStatus. When you want to check inline
  * a function and not the function itself then use an anonymous implementation
  * of this abstract class.
  * <br />
- * <strong>example:get different String in case feature is enabled oder disabled.</strong>
+ * <strong>example:get different String in case feature is enabledStatus oder disabledStatus.</strong>
  * <br />
  * <pre>
  * {@code
  *  FeatureContext context = new FeatureContext(Fitchy.getConfig());
  *  String resultDependingOnFeature = new FeatureChecker<String>(context, "test.feature") {
  *      public String onFeatureDisabled() {
- *          return "feature is disabled";
+ *          return "feature is disabledStatus";
  *      }
  *
  *      public String onFeatureEnabled() {
- *          return "feature is enabled";
+ *          return "feature is enabledStatus";
  *      }
  *
  *  }).run();
- *  System.out,println(resultDependingOnFeature); //should print "feature is disabled"
+ *  System.out,println(resultDependingOnFeature); //should print "feature is disabledStatus"
  * }
  * </pre>
  *
@@ -61,22 +61,22 @@ public abstract class FeatureChecker<T> {
 	}
 
     /**
-     * This function is called when the feature is enabled.
+     * This function is called when the feature is enabledStatus.
      *
-     * @return T result that should be returned when feature is enabled.
+     * @return T result that should be returned when feature is enabledStatus.
      */
 	public abstract T onFeatureEnabled();
 
     /**
-     * This function is called when the feature is disabled.
+     * This function is called when the feature is disabledStatus.
      *
-     * @return T result that should be returned when feature is disabled.
+     * @return T result that should be returned when feature is disabledStatus.
      */
 	public abstract T onFeatureDisabled();
 
     /**
      * Executing this function starts calling {@link FeatureContext} and
-     * ask if feature is enabled. Then it calls either {@link FeatureChecker#onFeatureEnabled()}
+     * ask if feature is enabledStatus. Then it calls either {@link FeatureChecker#onFeatureEnabled()}
      * or {@link FeatureChecker#onFeatureDisabled()} of the implementation and
      * return the results.
      *

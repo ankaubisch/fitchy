@@ -75,7 +75,7 @@ public class PropertyFeatureReader extends FeatureReader {
 		if(keyEnum.hasMoreElements()) {
 			Object key = keyEnum.nextElement();
 			if(key instanceof String) {
-				String value = rawEntryData.getProperty((String)key, options.disabled.getSystemName());
+				String value = rawEntryData.getProperty((String)key, options.disabledStatus.getSystemName());
 				next = new Feature((String)key, options.statusOf(value));
 			}
 		}

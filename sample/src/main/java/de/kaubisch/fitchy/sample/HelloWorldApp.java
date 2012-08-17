@@ -1,7 +1,7 @@
 package de.kaubisch.fitchy.sample;
 
 import de.kaubisch.fitchy.FeatureContext;
-import de.kaubisch.fitchy.Fitchy;
+import de.kaubisch.fitchy.ProxyBuilder;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 /**
@@ -40,7 +40,7 @@ public class HelloWorldApp
 		FeatureContext context = FeatureContext.Builder
 										.fromUrl(HelloWorldApp.class.getResource("/sample_features.properties"))
 										.build();
-		sample = Fitchy.observe(new HelloWorldSample(), context);
+		sample = ProxyBuilder.fromContext(context).build(new HelloWorldSample());
 	}
 	
 	public void testFeatures() {

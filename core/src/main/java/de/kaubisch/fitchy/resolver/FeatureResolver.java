@@ -46,7 +46,7 @@ public class FeatureResolver {
     /**
      * This functions decides whether a feature is available or not. It processes the {@link FeatureSwitch} annotation
      * and lookup in {@link de.kaubisch.fitchy.FeatureContext} member variable if feature exists. When the annotation doesn't have set the
-     * status value so it check if the feature has the status enabled taken from current {@link de.kaubisch.fitchy.Configuration} object.
+     * status value so it check if the feature has the status enabledStatus taken from current {@link de.kaubisch.fitchy.Configuration} object.
      *
      * @param annotation given annotation that needs to be checked
      * @return returns true if the annotation matches successful otherwise it returns false
@@ -56,7 +56,7 @@ public class FeatureResolver {
         if(annotation != null) {
             String statusValue = annotation.status();
             if("".equals(statusValue)) {
-                statusValue = config.enabled.getSystemName();
+                statusValue = config.enabledStatus.getSystemName();
             }
             FeatureStatus status = config.statusOf(statusValue);
             found = storage.featureHasStatus(annotation.value(), status);

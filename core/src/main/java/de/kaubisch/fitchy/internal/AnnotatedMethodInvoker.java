@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
 /**
  * This class lookup Annotations from a method and searches for {@link FeatureSwitch}
  * annotation. If annotation is found it checks if feature that is given by this annotation
- * is enabled and invokes the original method.
+ * is enabledStatus and invokes the original method.
  * If the annotation is not found it also invokes the original method.
  * If feature is not available the class returns null.
  *
@@ -108,7 +108,7 @@ public class AnnotatedMethodInvoker {
 
     /**
      * Determine if a passed {@link Method} has {@link FeatureSwitch} annotation and that
-     * the feature is enabled. It invokes the original method if the feature is enabled or
+     * the feature is enabledStatus. It invokes the original method if the feature is enabledStatus or
      * if the annotation is not found. Otherwise it returns null.
      *
      * @param method {@link Method} that was called from outside

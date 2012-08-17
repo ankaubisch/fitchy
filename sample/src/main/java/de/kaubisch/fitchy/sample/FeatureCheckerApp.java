@@ -18,12 +18,12 @@ public class FeatureCheckerApp {
 
 			@Override
 			public String onFeatureEnabled() {
-				return "The feature 'simple test' is enabled.";
+				return "The feature 'simple test' is enabledStatus.";
 			}
 
 			@Override
 			public String onFeatureDisabled() {
-				return "The feature 'simple test' is disabled.";
+				return "The feature 'simple test' is disabledStatus.";
 			}
 		}.run());
 	}
