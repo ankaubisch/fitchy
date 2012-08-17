@@ -26,7 +26,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import static de.kaubisch.fitchy.internal.Preconditions.*;
+import static de.kaubisch.fitchy.util.Preconditions.*;
 
 /**
  * {@link JavaProxyObserver} is an implementation of {@link FeatureObserver}
@@ -59,7 +59,7 @@ public class JavaProxyObserver implements FeatureObserver {
         /**
          * {@inheritDoc}
          */
-        public Object invoke(Object o, Method method, Object[] objects) {
+        public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
             return new AnnotatedMethodInvoker(origin, new FeatureResolverFactory(context)).invoke(method, objects);
         }
     }

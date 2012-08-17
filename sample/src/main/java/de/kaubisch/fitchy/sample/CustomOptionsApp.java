@@ -1,9 +1,8 @@
 package de.kaubisch.fitchy.sample;
 
-import de.kaubisch.fitchy.ContextBuilder;
 import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.Fitchy;
-import de.kaubisch.fitchy.FitchyConfig;
+import de.kaubisch.fitchy.Configuration;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 public class CustomOptionsApp {
@@ -27,10 +26,9 @@ public class CustomOptionsApp {
 	private DummyInterface sample;
 	
 	public CustomOptionsApp() {
-		FitchyConfig options = FitchyConfig.getFromPropertiesStream(CustomOptionsApp.class.getResourceAsStream("/custom-fitchy-configuration.properties"));
-        Fitchy.setConfig(options);
+		Configuration options = Configuration.getFromPropertiesStream(CustomOptionsApp.class.getResourceAsStream("/custom-fitchy-configuration.properties"));
 
-		FeatureContext context = ContextBuilder
+		FeatureContext context = FeatureContext.Builder
 									.fromUrl(CustomOptionsApp.class.getResource("/sample_features_de.properties"))
 									.withConfig(options)
 									.build();

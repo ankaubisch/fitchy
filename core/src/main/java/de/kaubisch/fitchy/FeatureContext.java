@@ -19,7 +19,16 @@
 package de.kaubisch.fitchy;
 
 import de.kaubisch.fitchy.exception.FeatureAlreadyExistsException;
+import de.kaubisch.fitchy.util.Preconditions;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,16 +39,202 @@ import java.util.Map;
  * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
  */
 public class FeatureContext {
+	/**
+	 * {@link Builder} takes an {@link URL} or an {@link InputStream} to build
+	 * a {@link FeatureContext}. There is an optional function with them you can set
+	 * a custom {@link Configuration}.
+	 * 
+	 * @author Andreas Kaubisch <andreas.kaubisch@gmail.com>
+	 */
+	public static final class Builder {
 
+		private Configuration configuration;
+		
+		private URL url;
+		private InputStream is;
+
+		
+		private Builder(Configuration configuration) {
+			this.configuration = configuration;
+		}
+		
+		private Builder() {
+			this(Configuration.getDefault());
+		}
+		
+		/**
+		 * Setup a {@link Builder} with an URL that point to a feature resource
+		 * file. It sets the default {@link Configuration};
+		 * 
+		 * @param url an {@link URL} to a resource with feature configuration
+		 * 
+		 * @return a new {@link Builder} that is configured to read from an {@link URL}
+		 * @throws IllegalArgumentException if given url is null
+		 */
+		public static Builder fromUrl(URL url) {
+			Preconditions.throwIllegalArgumentExceptionIfNull(url, "URL argument is required to create ContextBuilder");
+			Builder builder = create();
+			builder.url = url;
+			
+			return builder;
+		}
+		
+		public static Builder fromStream(InputStream is) {
+			Preconditions.throwIllegalArgumentExceptionIfNull(is, "InputStream argument is required to create ContextBuilder");
+			Builder builder = create();
+			builder.is = is;
+			
+			return builder;
+		}
+
+		
+		/**
+		 * Setup a {@link Builder} without an {@link URL} or an {@link InputStream}.
+		 * It sets the {@link Configuration} to default. This function is used when you want
+		 * to create an empty {@link FeatureContext}.
+		 * 
+		 * @return a new {@link Builder} without an {@link URL} and {@link InputStream}
+		 */
+		public static Builder create() {
+			return new Builder();
+		}
+
+		/**
+		 * Setup an alternative {@link Configuration} for current {@link Builder} instance. This {@link Configuration}
+		 * is used to instanciate the {@link FeatureContext} later.
+		 *  
+		 * @param config alternative {@link Configuration}
+		 * @return current {@link Builder} instance
+		 */
+		public Builder withConfig(Configuration config) {
+			Preconditions.throwIllegalArgumentExceptionIfNull(config, "Configuration is required");
+			this.configuration = config;
+			
+			return this;
+		}
+		
+		public FeatureContext build() {
+			FeatureContext context = null;
+			if(url != null) {
+				context = createFromUrl(url);
+			} else if (is != null) {
+				context = createFromStream(is);
+			} else {
+				context = createEmpty();
+			}
+			
+			return context;
+		}
+
+
+		
+		/**
+		 * Loads a resource with feature configuration from an {@link URL} and stores all
+		 * of this in a new {@link FeatureContext} and returns it.
+		 *  
+		 * @param url an {@link URL} to a resource with feature configuration
+		 * 
+		 * @return a new {@link FeatureContext} with loaded {@link Feature} items
+		 * @throws IllegalArgumentException if given url is null
+		 */
+		private FeatureContext createFromUrl(URL urlToFeatures) {
+			Preconditions.throwIllegalArgumentExceptionIfNull(urlToFeatures, "URL argument is required to create context");
+			FeatureContext newContext = createEmpty();
+			addFeaturesFromUrl(urlToFeatures, newContext);
+			
+			return newContext;
+		}
+		
+		/**
+		 * Loads a resource with feature configuration from an {@link InputStream} and stores all
+		 * of this in a new {@link FeatureContext} and returns it.
+		 * 
+		 * @param is an {@link InputStream} from a resource with feature configurations
+		 * @return a new {@link FeatureContext} with loaded {@link Feature} items
+		 * @throws an {@link IllegalArgumentException} if given InputStream is null
+		 */
+		private FeatureContext createFromStream(InputStream is) {
+			Preconditions.throwIllegalArgumentExceptionIfNull(is, "InputStream argument is required to create context");
+			FeatureContext newContext = createEmpty();
+			fillStoreWithFeatures(newContext, is);
+			
+			return newContext;
+		}
+		
+		/**
+		 * Creates an empty new instance of {@link FeatureContext).
+		 * 
+		 * @return a new empty instance of {@link FeatureContext}
+		 */
+		public FeatureContext createEmpty() {
+			return new FeatureContext(configuration);
+		}
+
+		/**
+		 * Add all features from url resource to existing {@link FeatureContext}.
+		 * This overrides existing {@link Feature} added to storage.
+		 * 
+		 * @param url an {@link URL} to a resource that contains features
+		 * @param context a {@link FeatureContext} that holds all features
+		 */
+		private void addFeaturesFromUrl(URL url, FeatureContext context) {
+			if(url != null) {
+				try {
+					File file = new File(url.toURI());
+					if(file.exists() && file.canRead()) {
+						fillStoreWithFeatures(context, new FileInputStream(file));
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}		
+		}
+
+		/**
+		 * Retrieves current options and the {@link FeatureReader} class that is set to this options.
+		 * Create an instance of this {@link FeatureReader} and loads all Features from File and put them
+		 * into {@link FeatureContext}.
+		 * 
+		 * @param context an instance of {@link FeatureContext}
+		 * @param is {@link InputStream} of a container with features
+		 * @throws FileNotFoundException is thrown if {@link File} is not found
+		 */
+		private void fillStoreWithFeatures(FeatureContext context, InputStream is) {
+			Configuration option = context.getConfig();
+			FeatureReader reader = null;
+			try {
+				Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, Configuration.class);
+				reader = constructor.newInstance(is, option);
+				
+				Feature feature = null;
+				while((feature = reader.read()) != null) {
+					context.addFeature(feature);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(reader != null) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
 	private Map<String, Feature> featureMap;
-	private FitchyConfig config;
+	private Configuration config;
 
     /**
-     * Initializes a new {@link FeatureContext} with given {@link FitchyConfig}
+     * Initializes a new {@link FeatureContext} with given {@link Configuration}
      *
-     * @param config current {@link FitchyConfig} instance
+     * @param config current {@link Configuration} instance
      */
-	public FeatureContext(FitchyConfig config) {
+	public FeatureContext(Configuration config) {
 		featureMap = new HashMap<String, Feature>();
 		this.config = config;
 	}
@@ -147,9 +342,9 @@ public class FeatureContext {
     /**
      * Returns the config the context is constructed from.
      *
-     * @return current {@link FitchyConfig} from context
+     * @return current {@link Configuration} from context
      */
-    public FitchyConfig getConfig() {
+    public Configuration getConfig() {
         return config;
     }
 }

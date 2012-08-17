@@ -32,17 +32,17 @@ public abstract class FeatureReader implements Closeable {
 	
 	protected InputStream is;
 
-    protected FitchyConfig options;
+    protected Configuration options;
 
 	/**
 	 * Constructor that needs an open {@link InputStream} instance.
 	 * 
 	 * @param is {@link InputStream} source of a source that contains features
-     * @param options {@link FitchyConfig} current options that the reader can use to
+     * @param options {@link Configuration} current options that the reader can use to
      *                                     determine which {@link de.kaubisch.fitchy.FeatureStatus}
      *                                     a {@link Feature} has.
      */
-	public FeatureReader(InputStream is, FitchyConfig options) {
+	public FeatureReader(InputStream is, Configuration options) {
 		this.is = is;
         this.options = options;
 	}

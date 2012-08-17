@@ -33,9 +33,9 @@ public class AspectJFeatureContext {
 
     private static final String SEMAPHORE = "semaphore";
 
-    public static FeatureContext initializeFor(FitchyConfig config, URL features) {
+    public static FeatureContext initializeFor(Configuration config, URL features) {
         synchronized(SEMAPHORE) {
-            context = ContextBuilder
+            context = FeatureContext.Builder
 						.fromUrl(features)
 						.withConfig(config)
 						.build();
@@ -43,9 +43,9 @@ public class AspectJFeatureContext {
         return context;
     }
 
-    public static FeatureContext initializeFor(FitchyConfig config, InputStream is) {
+    public static FeatureContext initializeFor(Configuration config, InputStream is) {
         synchronized (SEMAPHORE) {
-            context = ContextBuilder
+            context = FeatureContext.Builder
             			.fromStream(is)
             			.withConfig(config)
             			.build();

@@ -19,7 +19,7 @@
 package de.kaubisch.fitchy.loader;
 
 import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.FitchyConfig;
+import de.kaubisch.fitchy.Configuration;
 import de.kaubisch.fitchy.exception.UnsupportedFormatException;
 import de.kaubisch.fitchy.internal.PropertyFeatureReader;
 import org.hamcrest.core.Is;
@@ -40,12 +40,12 @@ import static org.junit.Assert.*;
  */
 public class PropertyFeatureReaderTest {
 
-    private FitchyConfig options;
+    private Configuration options;
     private InputStream is;
 
     @Before
     public void setUp() {
-        options = FitchyConfig.getDefault();
+        options = Configuration.getDefault();
     }
 
     @Test

@@ -20,7 +20,7 @@ package de.kaubisch.fitchy.resolver;
 
 import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.FeatureStatus;
-import de.kaubisch.fitchy.FitchyConfig;
+import de.kaubisch.fitchy.Configuration;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 /**
@@ -36,9 +36,9 @@ public class FeatureResolver {
 
     private FeatureContext storage;
 
-    private FitchyConfig config;
+    private Configuration config;
 
-    public FeatureResolver(FeatureContext context, FitchyConfig config) {
+    public FeatureResolver(FeatureContext context, Configuration config) {
         this.storage = context;
         this.config = config;
     }
@@ -46,7 +46,7 @@ public class FeatureResolver {
     /**
      * This functions decides whether a feature is available or not. It processes the {@link FeatureSwitch} annotation
      * and lookup in {@link de.kaubisch.fitchy.FeatureContext} member variable if feature exists. When the annotation doesn't have set the
-     * status value so it check if the feature has the status enabled taken from current {@link de.kaubisch.fitchy.FitchyConfig} object.
+     * status value so it check if the feature has the status enabled taken from current {@link de.kaubisch.fitchy.Configuration} object.
      *
      * @param annotation given annotation that needs to be checked
      * @return returns true if the annotation matches successful otherwise it returns false

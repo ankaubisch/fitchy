@@ -18,7 +18,7 @@
  */
 package de.kaubisch.fitchy.resolver;
 
-import de.kaubisch.fitchy.FitchyConfig;
+import de.kaubisch.fitchy.Configuration;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.internal.DefaultFeatureStatus;
 import de.kaubisch.fitchy.FeatureContext;
@@ -49,7 +49,7 @@ public class FeatureResolverTest {
 
     @Before
     public void setUp() throws Exception {
-        resolver = new FeatureResolver(context, FitchyConfig.newOption(DefaultFeatureStatus.class));
+        resolver = new FeatureResolver(context, Configuration.newOption(DefaultFeatureStatus.class));
     }
 
     @Test

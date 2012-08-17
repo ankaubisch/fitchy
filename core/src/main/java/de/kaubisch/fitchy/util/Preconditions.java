@@ -16,7 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package de.kaubisch.fitchy.internal;
+package de.kaubisch.fitchy.util;
 
 /**
  * Utility class that provide methods that checks several conditions.
@@ -25,7 +25,7 @@ package de.kaubisch.fitchy.internal;
  * Date: 7/17/12
  * Time: 8:49 PM
  */
-public class Preconditions {
+public final class Preconditions {
 
     /**
      * hide constructor to prevent instantiation

@@ -21,7 +21,7 @@ package de.kaubisch.fitchy.sample.aspectj;
 import de.kaubisch.fitchy.AspectJFeatureContext;
 import de.kaubisch.fitchy.Feature;
 import de.kaubisch.fitchy.FeatureContext;
-import de.kaubisch.fitchy.FitchyConfig;
+import de.kaubisch.fitchy.Configuration;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 /**
@@ -44,7 +44,7 @@ public class AspectJApp {
 
 
     public static void main(String[] args) {
-        FeatureContext context = AspectJFeatureContext.initializeFor(FitchyConfig.getDefault(), AspectJApp.class.getResourceAsStream("/sample_features.properties"));
+        FeatureContext context = AspectJFeatureContext.initializeFor(Configuration.getDefault(), AspectJApp.class.getResourceAsStream("/sample_features.properties"));
         context.addFeature("test.feature");
         AspectJApp app = new AspectJApp();
         System.out.println("Start test");

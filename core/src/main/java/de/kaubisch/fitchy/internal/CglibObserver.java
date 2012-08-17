@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.kaubisch.fitchy.internal.Preconditions.*;
+import static de.kaubisch.fitchy.util.Preconditions.*;
 
 /**
  * {@link CglibObserver} is a {@link FeatureObserver} implementation
@@ -79,7 +79,7 @@ public class CglibObserver implements FeatureObserver {
             this.context = context;
         }
 
-        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) {
+        public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
             return new AnnotatedMethodInvoker(origin, new FeatureResolverFactory(context)).invoke(method, objects);
         }
     }

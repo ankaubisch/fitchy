@@ -56,21 +56,21 @@ public class AnnotatedMethodInvokerTest {
     }
 
     @Test
-    public void invoke_WithFeature_ReturnsOriginalReturnValue() throws Exception {
+    public void invoke_WithFeature_ReturnsOriginalReturnValue() throws Throwable {
         Method sayHelloWithAnnotation = getMethod("sayHelloWithAnnotation");
         when(resolver.isFeatureAvailable((FeatureSwitch)any())).thenReturn(true);
         assertEquals("result should be orgin value 'hello'", "hello", invoker.invoke(sayHelloWithAnnotation, new Object[]{}));
     }
 
     @Test
-    public void invoke_WithDisabledFeature_ReturnsNullValue() throws Exception {
+    public void invoke_WithDisabledFeature_ReturnsNullValue() throws Throwable {
         Method sayHelloWithAnnotation = getMethod("sayHelloWithAnnotation");
         when(resolver.isFeatureAvailable((FeatureSwitch)any())).thenReturn(false);
         assertNull("result should be null because feature is disabled", invoker.invoke(sayHelloWithAnnotation, new Object[] {}));
     }
 
     @Test
-    public void invoke_WithoutFeature_ReturnsOrginalReturnValue() throws Exception {
+    public void invoke_WithoutFeature_ReturnsOrginalReturnValue() throws Throwable {
         Method sayHelloWithoutAnnotation = getMethod("sayHelloWithoutAnnotation");
         assertEquals("result should be origin value 'hello'", "hello", invoker.invoke(sayHelloWithoutAnnotation, new Object[]{}));
         verify(resolver, times(0)).isFeatureAvailable((FeatureSwitch)any());

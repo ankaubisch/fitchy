@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class FitchyConfig {
+public class Configuration {
 	public List<Enum<? extends FeatureStatus>> statusList;
 	
 	public FeatureStatus enabled;
@@ -37,12 +37,12 @@ public class FitchyConfig {
 
     public Class<? extends FeatureObserver> observerClass;
 	
-	public FitchyConfig() {
+	public Configuration() {
 		this.statusList  = new ArrayList<Enum<? extends FeatureStatus>>();
 	}
 
-	public static FitchyConfig newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
-		FitchyConfig option = new FitchyConfig();
+	public static Configuration newOption(Class<? extends Enum<? extends FeatureStatus>> status) {
+		Configuration option = new Configuration();
 		if(Enum.class.isAssignableFrom(status)) {
 			for(Enum<? extends FeatureStatus> e : status.getEnumConstants()) {
 				option.statusList.add(e);
@@ -57,12 +57,12 @@ public class FitchyConfig {
 		return option;
 	}
 
-	public static FitchyConfig getDefault() {
-        return getFromPropertiesStream(FitchyConfig.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
+	public static Configuration getDefault() {
+        return getFromPropertiesStream(Configuration.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties"));
 	}
 
-    public static FitchyConfig getFromPropertiesStream(InputStream is) {
-        FitchyConfig options = null;
+    public static Configuration getFromPropertiesStream(InputStream is) {
+        Configuration options = null;
         Properties fitchyProperties = new Properties();
         try {
             fitchyProperties.load(is);

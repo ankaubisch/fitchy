@@ -20,6 +20,7 @@ package de.kaubisch.fitchy.internal;
 
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 import de.kaubisch.fitchy.exception.AnnotationNotFoundException;
+import de.kaubisch.fitchy.exception.InvokeException;
 import de.kaubisch.fitchy.resolver.AnnotationRetriever;
 import de.kaubisch.fitchy.resolver.FeatureResolver;
 import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
@@ -57,9 +58,9 @@ public class AnnotatedMethodInvoker {
     	 * @param method the {@link Method} that should be called
     	 * @param args all arguments which are needed to call this method
     	 * @return a return value of this method that was called
-    	 * @throws Throwable all exceptions that this method can throw
+    	 * @throws InvokeException container for all exceptions that this method can throw
     	 */
-        Object invoke(Method method, Object[] args) throws Throwable;
+        Object invoke(Method method, Object[] args) throws InvokeException;
         
         /**
          * Returns the {@link Class} of that object, that will be called with
@@ -80,11 +81,15 @@ public class AnnotatedMethodInvoker {
     public AnnotatedMethodInvoker(final Object origin, FeatureResolverFactory resolverFactory) {
         this.resolverFactory = resolverFactory;
         invoke = new MethodInvoke() {
-            public Object invoke(Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
+            public Object invoke(Method method, Object[] args) throws InvokeException {
             	boolean accessible = method.isAccessible();
             	try{
             		method.setAccessible(true);
             		return method.invoke(origin, args);
+            	} catch (IllegalAccessException e) {
+            		throw new InvokeException(e);
+            	} catch (InvocationTargetException e) {
+            		throw new InvokeException(e);
             	} finally {
             		method.setAccessible(accessible);
             	}
@@ -109,23 +114,21 @@ public class AnnotatedMethodInvoker {
      * @param method {@link Method} that was called from outside
      * @param arguments of method call
      * @return returns the original return value or null
-     * @throws Exception rethrow exceptions that a method call can throw
+     * @throws Throwable rethrow exceptions that a method call can throw
      */
-    public Object invoke(Method method, Object[] arguments) {
+    public Object invoke(Method method, Object[] arguments) throws Throwable {
         AnnotationRetriever retriever = new AnnotationRetriever(FeatureSwitch.class, invoke.getTargetClass());
         Object result = null;
         try {
-            try {
-                FeatureSwitch featureSwitch = retriever.getAnnotation(method);
-                FeatureResolver resolver =  resolverFactory.createResolver();
-                if(resolver.isFeatureAvailable(featureSwitch)) {
-                    result = invoke.invoke(method, arguments);
-                }
-            } catch (AnnotationNotFoundException e) {
+            FeatureSwitch featureSwitch = retriever.getAnnotation(method);
+            FeatureResolver resolver =  resolverFactory.createResolver();
+            if(resolver.isFeatureAvailable(featureSwitch)) {
                 result = invoke.invoke(method, arguments);
             }
-        } catch (Throwable e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (AnnotationNotFoundException e) {
+            result = invoke.invoke(method, arguments);
+        } catch (InvokeException e) {
+        	throw e.getCause();
         }
 
         return result;

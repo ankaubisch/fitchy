@@ -18,7 +18,6 @@
  */
 package de.kaubisch.fitchy.sample;
 
-import de.kaubisch.fitchy.ContextBuilder;
 import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.Fitchy;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
@@ -43,7 +42,7 @@ public class CglibProxyApp {
     }
 
     public static void main(String[] args) {
-        FeatureContext context = ContextBuilder.fromUrl(CglibProxyApp.class.getResource("/sample_features.properties")).build();
+        FeatureContext context = FeatureContext.Builder.fromUrl(CglibProxyApp.class.getResource("/sample_features.properties")).build();
         CglibProxyApp app = Fitchy.observeWithObserver(new CglibProxyApp("Hello world"), context, CglibObserver.class);
 
         System.out.println("Message:" + app.getMessage());

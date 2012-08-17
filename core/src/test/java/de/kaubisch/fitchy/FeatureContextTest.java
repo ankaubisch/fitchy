@@ -33,13 +33,13 @@ import static org.junit.Assert.*;
  */
 public class FeatureContextTest {
 
-    private FitchyConfig options;
+    private Configuration options;
 
     private FeatureContext context;
 
     @Before
     public void setUp() throws Exception {
-        options = FitchyConfig.getDefault();
+        options = Configuration.getDefault();
         context = new FeatureContext(options);
     }
 

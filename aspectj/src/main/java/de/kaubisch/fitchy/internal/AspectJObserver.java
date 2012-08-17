@@ -3,6 +3,7 @@ package de.kaubisch.fitchy.internal;
 import de.kaubisch.fitchy.AspectJFeatureContext;
 import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
+import de.kaubisch.fitchy.exception.InvokeException;
 import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,8 +30,12 @@ public class AspectJObserver {
         FeatureContext context = AspectJFeatureContext.getInstance();
         FeatureResolverFactory resolverFactory = new FeatureResolverFactory(context);
         AnnotatedMethodInvoker.MethodInvoke invoke = new AnnotatedMethodInvoker.MethodInvoke() {
-        	public Object invoke(Method method, Object[] args) throws Throwable  {
-                return pjp.proceed();
+        	public Object invoke(Method method, Object[] args) throws InvokeException  {
+                try {
+					return pjp.proceed();
+				} catch (Throwable e) {
+					throw new InvokeException(e);
+				}
             }
             
             public Class<?> getTargetClass() {
