@@ -205,7 +205,7 @@ public class FeatureContext {
 			Configuration option = context.getConfig();
 			FeatureReader reader = null;
 			try {
-				Constructor<? extends FeatureReader> constructor = option.readerClass.getConstructor(InputStream.class, Configuration.class);
+				Constructor<? extends FeatureReader> constructor = option.getReaderClass().getConstructor(InputStream.class, Configuration.class);
 				reader = constructor.newInstance(is, option);
 				
 				Feature feature = null;

@@ -18,20 +18,20 @@
  */
 package de.kaubisch.fitchy.internal;
 
-import de.kaubisch.fitchy.FeatureContext;
-import de.kaubisch.fitchy.FeatureObserver;
-import de.kaubisch.fitchy.exception.CannotCreateProxyException;
-import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
+import static de.kaubisch.fitchy.util.Preconditions.throwIllegalArgumentExceptionIfNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.kaubisch.fitchy.util.Preconditions.*;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+import de.kaubisch.fitchy.FeatureContext;
+import de.kaubisch.fitchy.FeatureObserver;
+import de.kaubisch.fitchy.exception.CannotCreateProxyException;
+import de.kaubisch.fitchy.resolver.FeatureResolverFactory;
 
 /**
  * {@link CglibObserver} is a {@link FeatureObserver} implementation
@@ -53,15 +53,15 @@ import static de.kaubisch.fitchy.util.Preconditions.*;
  */
 public class CglibObserver implements FeatureObserver {
 
-    private static final Map<Class<?>, Object> defaultValueMap;
+    private static final Map<Class<?>, Object> DEFAULT_VALUE_MAP;
 
     static {
-        defaultValueMap = new HashMap<Class<?>, Object>();
-        defaultValueMap.put(Integer.TYPE, -1);
-        defaultValueMap.put(Long.TYPE, -1);
-        defaultValueMap.put(Double.TYPE, -1);
-        defaultValueMap.put(Float.TYPE, -1);
-        defaultValueMap.put(Byte.TYPE, -1);
+        DEFAULT_VALUE_MAP = new HashMap<Class<?>, Object>();
+        DEFAULT_VALUE_MAP.put(Integer.TYPE, -1);
+        DEFAULT_VALUE_MAP.put(Long.TYPE, -1);
+        DEFAULT_VALUE_MAP.put(Double.TYPE, -1);
+        DEFAULT_VALUE_MAP.put(Float.TYPE, -1);
+        DEFAULT_VALUE_MAP.put(Byte.TYPE, -1);
     }
 
     /**
@@ -162,7 +162,7 @@ public class CglibObserver implements FeatureObserver {
     private Object[] getConstructorValues(Class<?>[] classes) {
         Object[] values = new Object[classes.length];
         for(int i = 0; i < classes.length; i++) {
-            values[i] = defaultValueMap.get(classes[i]);
+            values[i] = DEFAULT_VALUE_MAP.get(classes[i]);
         }
 
         return values;

@@ -6,7 +6,7 @@ import de.kaubisch.fitchy.ProxyBuilder;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 public class CustomOptionsApp {
-	public static interface DummyInterface {
+	public interface DummyInterface {
         void doMethod();
 	}
 
@@ -26,7 +26,9 @@ public class CustomOptionsApp {
 	private DummyInterface sample;
 	
 	public CustomOptionsApp() {
-		Configuration options = Configuration.getFromPropertiesStream(CustomOptionsApp.class.getResourceAsStream("/custom-fitchy-configuration.properties"));
+		Configuration options = Configuration.Builder
+									.fromStream(CustomOptionsApp.class.getResourceAsStream("/custom-fitchy-configuration.properties"))
+									.build();
 
 		FeatureContext context = FeatureContext.Builder
 									.fromUrl(CustomOptionsApp.class.getResource("/sample_features_de.properties"))

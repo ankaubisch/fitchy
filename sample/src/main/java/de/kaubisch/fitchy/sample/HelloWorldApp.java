@@ -12,7 +12,7 @@ public class HelloWorldApp
 {
 	private HelloWorld sample;
 	
-	public static interface HelloWorld {
+	public interface HelloWorld {
 		void sayHello();
 		void sayHello2();
 	}

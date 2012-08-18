@@ -19,9 +19,8 @@
 package de.kaubisch.fitchy.sample.aspectj;
 
 import de.kaubisch.fitchy.AspectJFeatureContext;
-import de.kaubisch.fitchy.Feature;
-import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.Configuration;
+import de.kaubisch.fitchy.FeatureContext;
 import de.kaubisch.fitchy.annotation.FeatureSwitch;
 
 /**

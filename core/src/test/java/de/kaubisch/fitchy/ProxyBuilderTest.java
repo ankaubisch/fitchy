@@ -30,7 +30,7 @@ public class ProxyBuilderTest {
 	@Before
 	public void setUp() {
 		config = new Configuration();
-		config.observerClass = FeatureObserverMock.class;
+		config.setObserverClass(FeatureObserverMock.class);
 		when(context.getConfig()).thenReturn(config);
 	}
 	
@@ -47,7 +47,7 @@ public class ProxyBuilderTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void fromContext_withoutObserverClass_throwsIllegalArgumentException() {
-		config.observerClass = null;
+		config.setObserverClass(null);
 		ProxyBuilder.fromContext(context);
 	}
 	

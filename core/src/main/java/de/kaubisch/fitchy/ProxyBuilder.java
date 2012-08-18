@@ -45,9 +45,9 @@ public class ProxyBuilder {
 	 */
     public static ProxyBuilder fromContext(FeatureContext context) {
     	Preconditions.throwIllegalArgumentExceptionIfNull(context, "FeatureContext argument is required to create ProxyBuilder.");
-    	Preconditions.throwIllegalArgumentExceptionIfNull(context.getConfig().observerClass, "given Configuration object of context doesn't have an oberservClass defined.");
+    	Preconditions.throwIllegalArgumentExceptionIfNull(context.getConfig().getObserverClass(), "given Configuration object of context doesn't have an oberservClass defined.");
     	try {
-			FeatureObserver observer = context.getConfig().observerClass.newInstance();
+			FeatureObserver observer = context.getConfig().getObserverClass().newInstance();
 			return new ProxyBuilder(context, observer);
 		} catch (InstantiationException e) {
 			throw new CannotCreateProxyException("unable to create FeatureObserver instance", e);
