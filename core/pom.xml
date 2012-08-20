@@ -4,7 +4,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>de.kaubisch</groupId>
+        <groupId>com.googlecode</groupId>
         <artifactId>fitchy</artifactId>
         <version>0.2-SNAPSHOT</version>
     </parent>

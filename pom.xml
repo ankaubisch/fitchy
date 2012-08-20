@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.kaubisch</groupId>
+    <groupId>com.googlecode</groupId>
     <artifactId>fitchy</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>fitchy</name>
+    <description>A library that provide feature toggle via annotations.</description>
+    <url>http://code.google.com/p/fitchy/</url>
     <modules>
         <module>core</module>
         <module>sample</module>
     	<module>aspectj</module>
-  </modules>
-
+  	</modules>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+    		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    		<distribution>repository</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:http://code.google.com/p/fitchy/</connection>
+        <developerConnection>scm:git:https://code.google.com/p/fitchy/</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://code.google.com/p/fitchy/source/browse/</url>
+    </scm>
+	<developers>
+	    <developer>
+        	<id>andreas.kaubisch</id>
+	        <name>Andreas Kaubisch</name>
+	        <email>andreas.kaubisch@gmail.com</email>
+	    </developer>
+	</developers>
     <dependencyManagement>
         <dependencies>
             <dependency>
