@@ -8,7 +8,7 @@
         <artifactId>fitchy</artifactId>
         <version>0.2-SNAPSHOT</version>
     </parent>
-    <groupId>de.kaubisch.fitchy</groupId>
+    <groupId>com.googlecode.fitchy</groupId>
 	<artifactId>sample</artifactId>
 	<name>fitchy-sample</name>
 	<properties>
@@ -16,12 +16,12 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>de.kaubisch.fitchy</groupId>
+			<groupId>com.googlecode.fitchy</groupId>
 			<artifactId>core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
         <dependency>
-            <groupId>de.kaubisch.fitchy</groupId>
+            <groupId>com.googlecode.fitchy</groupId>
             <artifactId>aspectj</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -85,7 +85,7 @@
                             <target>1.6</target>
                             <aspectLibraries>
                                 <aspectLibrary>
-                                    <groupId>de.kaubisch.fitchy</groupId>
+                                    <groupId>com.googlecode.fitchy</groupId>
                                     <artifactId>aspectj</artifactId>
                                 </aspectLibrary>
                             </aspectLibraries>
