@@ -8,33 +8,33 @@
 		<version>0.2-SNAPSHOT</version>
 	</parent>
 	<groupId>com.googlecode.fitchy</groupId>
-	<artifactId>aspectj</artifactId>
+	<artifactId>fitchy-sample-spring</artifactId>
 	<version>${parent.version}</version>
-	<name>fitchy-aspectj</name>
+	<name>fitchy-sample-spring</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.6.11</version>
-		</dependency>
-		<dependency>
 			<groupId>com.googlecode.fitchy</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>spring</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.1.2.RELEASE</version>
+		</dependency>
+            
 	</dependencies>
 </project>

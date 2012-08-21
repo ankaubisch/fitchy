@@ -167,7 +167,7 @@ public class Configuration {
 	}
 
 	public static Configuration getDefault() {
-        return Builder.fromStream(Configuration.class.getResourceAsStream("/de/kaubisch/fitchy/default-fitchy-configuration.properties")).build();
+        return Builder.fromStream(Configuration.class.getResourceAsStream("/com/googlecode/fitchy/default-fitchy-configuration.properties")).build();
 	}
 
 	public FeatureStatus statusOf(String value) {
