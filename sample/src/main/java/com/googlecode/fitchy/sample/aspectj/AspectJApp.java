@@ -18,10 +18,10 @@
  */
 package com.googlecode.fitchy.sample.aspectj;
 
+import com.googlecode.fitchy.AspectJFeatureContext;
 import com.googlecode.fitchy.Configuration;
 import com.googlecode.fitchy.FeatureContext;
 import com.googlecode.fitchy.annotation.FeatureSwitch;
-import com.googlecode.fitchy.aspectj.AspectJFeatureContext;
 
 
 /**

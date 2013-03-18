@@ -1,8 +1,7 @@
 package com.googlecode.fitchy.spring;
 
+import com.googlecode.fitchy.internal.AspectJObserver;
 import org.aspectj.lang.annotation.Aspect;
-
-import com.googlecode.fitchy.aspectj.AspectJObserver;
 
 @Aspect
 public class SpringAspectJObserver extends AspectJObserver {
